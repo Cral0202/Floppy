@@ -1,44 +1,20 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
+#include "Game.h"
 
 int main() {
-    // The window
-    sf::RenderWindow window(sf::VideoMode(1000, 1000), "Floppy", sf::Style::Default);
-    
-    // A green circle
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    // Init game engine
+    Game game;
 
     // The game loop
-    while (window.isOpen()) {
-        // Event polling
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            // Closes the window
-            if (event.type == sf::Event::Closed) {
-                window.close();
-                break;
-            }
-            if (event.type == sf::Event::KeyPressed) {
-                if (event.key.code == sf::Keyboard::Escape) {
-                    window.close();
-                    break;
-                }
-            }
-                
-        }
+    while (game.running()) {
 
         // Update game state
-
+        game.update();
 
         // Render game
-        window.clear(); // Clear old frame
+        game.render();
 
-        window.draw(shape);
-
-        window.display(); // Draws what has been rendered so far
+        // Sleeps the while loop
+        sf::sleep(sf::milliseconds(1));
     }
 
     return 0;
