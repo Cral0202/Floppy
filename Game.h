@@ -27,8 +27,8 @@ private:
 	void initEntities(); // Used to initialize the entities
 
 	void spawnTowers(); // Used to spawn towers
-
 	void moveGame(); // Used to move the game screen
+	void endGame(); // Used to end the game
 public:
 	// Constructor & Destructor
 	Game();

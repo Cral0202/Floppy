@@ -24,7 +24,7 @@ void Game::initEntities() {
 }
 
 void Game::spawnTowers() {
-    if (spawnTowerCounter == 600) {
+    if (spawnTowerCounter == 400) {
         spawnTowerCounter = 0;
         
         // Create new towers and add to the collection
@@ -54,6 +54,10 @@ void Game::moveGame() {
 
     // Increments the spawn time counter for towers
     spawnTowerCounter++;
+}
+
+void Game::endGame() {
+    startGame = false;
 }
 
 Game::Game() {
@@ -104,13 +108,18 @@ void Game::update() {
 
     if (startGame) {
         // Collision detection logic
-        for (const Tower& tower : towers) {
-            if (player->collidesWith(tower) || player->getTouchingGround()) {
-                // Collision occurred, game over
-                startGame = false;
+        for (const Tower tower : towers) {
+            if (player->collidesWith(tower)) {
+                // Collision occurred
+                endGame();
             }
         }
+        if (player->getTouchingGround()) {
+            // Collision occurred
+            endGame();
+        }
 
+        // Keeps the game state flowing
         moveGame();
         spawnTowers();
     }
