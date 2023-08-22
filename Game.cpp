@@ -14,9 +14,13 @@ void Game::initWindow() {
     window->setFramerateLimit(144);
 }
 
-void Game::initTowers() {
+void Game::initEntities() {
+    // Inits the towers
     towers.emplace_back(800.f, 0.f); // Top tower
     towers.emplace_back(800.f, (600.f - 200.f)); // Bottom tower
+
+    // Inits the player
+    player = new Player(50.f, (videoMode.height / 2));
 }
 
 void Game::spawnTowers() {
@@ -45,6 +49,9 @@ void Game::moveGame() {
         }
     }
 
+    // Moves the player
+    player->move(0.5f);
+
     // Increments the spawn time counter for towers
     spawnTowerCounter++;
 }
@@ -52,11 +59,12 @@ void Game::moveGame() {
 Game::Game() {
 	initVariables();
 	initWindow();
-    initTowers();
+    initEntities();
 }
 
 Game::~Game() {
 	delete window;
+    delete player;
 }
 
 const bool Game::running() const {
@@ -75,6 +83,12 @@ void Game::pollEvents() {
             if (event.key.code == sf::Keyboard::Escape) {
                 window->close();
                 break;
+            }
+        }
+        // Moves the player if the spacebar is pressed
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Space) {
+                player->move((-50.f));
             }
         }
 
@@ -99,6 +113,9 @@ void Game::render() {
     for (Tower tower : towers) {
         tower.draw(*window);
     }
+
+    // Draws the player
+    player->draw(*window);
 
     window->display(); // Draws what has been rendered so far
 }

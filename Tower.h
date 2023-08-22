@@ -9,13 +9,14 @@ private:
 	// The width and height of the towers
 	float towerHeight;
 	float towerWidth;
+
+	void initVariables(); // Initializes the variables
 public:
 	Tower(float x, float y);
 	~Tower();
-
-	void initVariables(); // Initializes the variables
+	
 	void move(float offset); // Moves the towers
 	void draw(sf::RenderWindow& window); // Draws the towers to the window
-	sf::Vector2f getPosition();
+	sf::Vector2f getPosition(); // Returns the position of the tower
 };
 

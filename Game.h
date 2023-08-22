@@ -6,6 +6,7 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 #include "Tower.h"
+#include "Player.h"
 
 class Game {
 private:
@@ -15,13 +16,14 @@ private:
 
 	// Game objects
 	std::vector<Tower> towers;
+	Player* player;
 
 	// Timer variables
 	int spawnTowerCounter; // Keeps track of when towers should spawn
 
 	void initVariables(); // Used to initialize variables
 	void initWindow(); // Used to initialize the window
-	void initTowers(); // Used to initialize the towers
+	void initEntities(); // Used to initialize the entities
 
 	void spawnTowers(); // Used to spawn towers
 
