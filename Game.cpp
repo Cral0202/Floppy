@@ -50,7 +50,7 @@ void Game::moveGame() {
     }
 
     // Moves the player
-    player->move(0.5f);
+    player->move(0.0f, videoMode.height);
 
     // Increments the spawn time counter for towers
     spawnTowerCounter++;
@@ -88,7 +88,7 @@ void Game::pollEvents() {
         // Moves the player if the spacebar is pressed
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Space) {
-                player->move((-50.f));
+                player->jump();
             }
         }
 
