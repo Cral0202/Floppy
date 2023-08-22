@@ -2,6 +2,8 @@
 
 void Game::initVariables() {
 	window = nullptr;
+    
+    spawnTowerCounter = 0;
 }
 
 void Game::initWindow() {
@@ -13,15 +15,38 @@ void Game::initWindow() {
 }
 
 void Game::initTowers() {
-    // Sets up the bottom towers
-    bottomTower.setSize(sf::Vector2f(50.f, 200.f));
-    bottomTower.setFillColor(sf::Color::Cyan);
-    bottomTower.setPosition(600.f, (600.f - 200.f));
+    towers.emplace_back(800.f, 0.f); // Top tower
+    towers.emplace_back(800.f, (600.f - 200.f)); // Bottom tower
+}
 
-    // Sets up the top towers
-    topTower.setSize(sf::Vector2f(50.f, 200.f));
-    topTower.setFillColor(sf::Color::Cyan);
-    topTower.setPosition(600.f, 0.f);
+void Game::spawnTowers() {
+    if (spawnTowerCounter == 600) {
+        spawnTowerCounter = 0;
+        
+        // Create new towers and add to the collection
+        towers.emplace_back(800.f, 0.f); // Top tower
+        towers.emplace_back(800.f, (600.f - 200.f)); // Bottom tower
+    }
+}
+
+void Game::moveGame() {
+    // Moves all of the towers to the left
+    for (Tower& tower : towers) {
+        tower.move(-1.f);
+    }
+
+    // Deletes towers if they are outside of the window
+    for (auto it = towers.begin(); it != towers.end();) {
+        if (it->getPosition().x < -100) {
+            it = towers.erase(it); // Erase and get the next iterator
+        }
+        else {
+            ++it;
+        }
+    }
+
+    // Increments the spawn time counter for towers
+    spawnTowerCounter++;
 }
 
 Game::Game() {
@@ -58,17 +83,22 @@ void Game::pollEvents() {
 
 void Game::update() {
     pollEvents();
+    moveGame();
+    spawnTowers();
 
     // Gets mouse position relative to the window
-    std::cout << "Mouse pos: " << sf::Mouse::getPosition(*window).x << " " << sf::Mouse::getPosition(*window).y << std::endl;
+    //std::cout << "Mouse pos: " << sf::Mouse::getPosition(*window).x << " " << sf::Mouse::getPosition(*window).y << std::endl;
+    
+    //std::cout << spawnTowerCounter << std::endl;
 }
 
 void Game::render() {
     window->clear(); // Clear old frame
 
-    // Draw game objects
-    window->draw(bottomTower);
-    window->draw(topTower);
+    // Draw all towers
+    for (Tower tower : towers) {
+        tower.draw(*window);
+    }
 
     window->display(); // Draws what has been rendered so far
 }

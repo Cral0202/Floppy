@@ -5,6 +5,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
+#include "Tower.h"
 
 class Game {
 private:
@@ -13,12 +14,18 @@ private:
 	sf::VideoMode videoMode; // The videomode
 
 	// Game objects
-	sf::RectangleShape bottomTower;
-	sf::RectangleShape topTower;
+	std::vector<Tower> towers;
+
+	// Timer variables
+	int spawnTowerCounter; // Keeps track of when towers should spawn
 
 	void initVariables(); // Used to initialize variables
 	void initWindow(); // Used to initialize the window
 	void initTowers(); // Used to initialize the towers
+
+	void spawnTowers(); // Used to spawn towers
+
+	void moveGame(); // Used to move the game screen
 public:
 	// Constructor & Destructor
 	Game();
