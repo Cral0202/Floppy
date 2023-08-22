@@ -18,5 +18,6 @@ public:
 	void move(float offset); // Moves the towers
 	void draw(sf::RenderWindow& window); // Draws the towers to the window
 	sf::Vector2f getPosition(); // Returns the position of the tower
+	sf::FloatRect getBoundingBox() const; // Used for collision detection
 };
 

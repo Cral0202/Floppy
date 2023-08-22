@@ -3,12 +3,14 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <iostream>
+#include "Tower.h"
 
 class Player {
 private:
 	sf::CircleShape player; // The player
 
 	float playerSize; // The size of the player
+	bool touchingGround; // Checks if the player is touching the ground
 
 	sf::Vector2f velocity; // Velocity of the player
 	const float gravity = 0.05f; // Gravity effect
@@ -22,5 +24,7 @@ public:
 	void jump(); // Player jumps
 	void draw(sf::RenderWindow& window); // Draws the towers to the window
 	sf::Vector2f getPosition(); // Returns the position of the player
+	bool getTouchingGround();
+	bool collidesWith(const Tower& tower) const; // Returns wether player is colliding with any towers
 };
 

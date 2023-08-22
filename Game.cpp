@@ -102,7 +102,15 @@ void Game::pollEvents() {
 void Game::update() {
     pollEvents();
 
-    if (startGame == true) {
+    if (startGame) {
+        // Collision detection logic
+        for (const Tower& tower : towers) {
+            if (player->collidesWith(tower) || player->getTouchingGround()) {
+                // Collision occurred, game over
+                startGame = false;
+            }
+        }
+
         moveGame();
         spawnTowers();
     }

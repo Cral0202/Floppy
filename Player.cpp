@@ -13,6 +13,7 @@ Player::~Player() {
 
 void Player::initVariables() {
 	playerSize = 20.f;
+	touchingGround = false;
 }
 
 void Player::move(float offset, float height) {
@@ -27,6 +28,7 @@ void Player::move(float offset, float height) {
 	if (player.getPosition().y >= height - playerSize) {
 		player.setPosition(player.getPosition().x, height - playerSize);
 		velocity.y = 0.0f; // Reset velocity when player hits the ground
+		touchingGround = true;
 	}
 	// Makes it so player can't go above map
 	else if (player.getPosition().y <= 0 - playerSize) {
@@ -45,4 +47,20 @@ void Player::draw(sf::RenderWindow& window) {
 
 sf::Vector2f Player::getPosition() {
 	return player.getPosition();
+}
+
+bool Player::getTouchingGround() {
+	return touchingGround;
+}
+
+// Inside Player class
+bool Player::collidesWith(const Tower& tower) const {
+	// Calculate player's bounding box
+	sf::FloatRect playerBounds = player.getGlobalBounds();
+
+	// Calculate tower's bounding box
+	sf::FloatRect towerBounds = tower.getBoundingBox();
+
+	// Check for intersection
+	return playerBounds.intersects(towerBounds);
 }

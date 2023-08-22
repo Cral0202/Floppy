@@ -27,3 +27,7 @@ void Tower::draw(sf::RenderWindow& window) {
 sf::Vector2f Tower::getPosition() {
     return tower.getPosition();
 }
+
+sf::FloatRect Tower::getBoundingBox() const {
+    return tower.getGlobalBounds();
+}
