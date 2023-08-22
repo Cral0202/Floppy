@@ -3,6 +3,7 @@
 void Game::initVariables() {
 	window = nullptr;
     startGame = false;
+    endTheGame = false;
     spawnTowerCounter = 0;
 }
 
@@ -57,7 +58,7 @@ void Game::moveGame() {
 }
 
 void Game::endGame() {
-    startGame = false;
+    endTheGame = true;
 }
 
 Game::Game() {
@@ -142,4 +143,12 @@ void Game::render() {
     player->draw(*window);
 
     window->display(); // Draws what has been rendered so far
+}
+
+const bool Game::gameEnded() const {
+    return endTheGame;
+}
+
+sf::RenderWindow* Game::getWindow() {
+    return window;
 }

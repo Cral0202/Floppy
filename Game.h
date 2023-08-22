@@ -21,6 +21,7 @@ private:
 	// Timer variables
 	int spawnTowerCounter; // Keeps track of when towers should spawn
 	bool startGame; // Keeps track of if game should start
+	bool endTheGame; // Keeps track of if game should end
 
 	void initVariables(); // Used to initialize variables
 	void initWindow(); // Used to initialize the window
@@ -35,6 +36,8 @@ public:
 	~Game();
 
 	const bool running() const; // Used to check if game/window is running
+	const bool gameEnded() const; // Used to check if game has ended
+	sf::RenderWindow* getWindow(); // Used to get the window
 	void pollEvents(); // Used to poll events
 	void update(); // Used to update game state
 	void render(); // Used to render game
