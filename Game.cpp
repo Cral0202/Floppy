@@ -2,7 +2,7 @@
 
 void Game::initVariables() {
 	window = nullptr;
-    
+    startGame = false;
     spawnTowerCounter = 0;
 }
 
@@ -88,7 +88,11 @@ void Game::pollEvents() {
         // Moves the player if the spacebar is pressed
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Space) {
-                player->jump();
+                if (!startGame) {
+                    startGame = true;
+                }
+
+                player->jump();              
             }
         }
 
@@ -97,8 +101,11 @@ void Game::pollEvents() {
 
 void Game::update() {
     pollEvents();
-    moveGame();
-    spawnTowers();
+
+    if (startGame == true) {
+        moveGame();
+        spawnTowers();
+    }
 
     // Gets mouse position relative to the window
     //std::cout << "Mouse pos: " << sf::Mouse::getPosition(*window).x << " " << sf::Mouse::getPosition(*window).y << std::endl;

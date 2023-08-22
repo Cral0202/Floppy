@@ -20,6 +20,7 @@ private:
 
 	// Timer variables
 	int spawnTowerCounter; // Keeps track of when towers should spawn
+	bool startGame; // Keeps track of if game should start
 
 	void initVariables(); // Used to initialize variables
 	void initWindow(); // Used to initialize the window
