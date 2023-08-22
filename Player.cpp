@@ -12,7 +12,7 @@ Player::~Player() {
 }
 
 void Player::initVariables() {
-	playerSize = 10.f;
+	playerSize = 20.f;
 }
 
 void Player::move(float offset, float height) {
@@ -23,8 +23,14 @@ void Player::move(float offset, float height) {
 	player.move(sf::Vector2f(0.f, velocity.y));
 
 	// Keep the player within the window bounds
+	// Makes it so player can't go under map
 	if (player.getPosition().y >= height - playerSize) {
 		player.setPosition(player.getPosition().x, height - playerSize);
+		velocity.y = 0.0f; // Reset velocity when player hits the ground
+	}
+	// Makes it so player can't go above map
+	else if (player.getPosition().y <= 0 - playerSize) {
+		player.setPosition(player.getPosition().x, 0 - playerSize);
 		velocity.y = 0.0f; // Reset velocity when player hits the ground
 	}
 }
