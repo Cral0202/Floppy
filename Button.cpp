@@ -34,6 +34,10 @@ Button::~Button() {
     //delete font;
 }
 
+sf::FloatRect Button::getBoundingBox() const {
+    return button.getGlobalBounds();
+}
+
 void Button::draw(sf::RenderWindow& window) {
 	window.draw(button);
     window.draw(buttonText);

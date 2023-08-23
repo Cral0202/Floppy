@@ -24,6 +24,7 @@ public:
 	void jump(); // Player jumps
 	void draw(sf::RenderWindow& window); // Draws the towers to the window
 	sf::Vector2f getPosition(); // Returns the position of the player
+	void setPosition(float x, float y);
 	bool getTouchingGround();
 	bool collidesWith(const Tower& tower) const; // Returns wether player is colliding with any towers
 };

@@ -152,3 +152,16 @@ const bool Game::gameEnded() const {
 sf::RenderWindow* Game::getWindow() {
     return window;
 }
+
+void Game::resetGameState() {
+    // Resets the flags
+    endTheGame = false;
+    startGame = false;
+    spawnTowerCounter = 0;
+
+    towers.clear(); // Removes all the towers
+    towers.emplace_back(800.f, 0.f); // Top tower
+    towers.emplace_back(800.f, (600.f - 200.f)); // Bottom tower
+
+    player->setPosition(50.f, (videoMode.height / 2)); // Resets the player to spawn position
+}

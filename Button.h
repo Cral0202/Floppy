@@ -7,6 +7,7 @@
 class Button {
 private:
 	sf::RectangleShape button; // The button
+	sf::Event event; // The events
 	float buttonHeight; // The height of the button
 	float buttonWidth; // The width of the button
 	float xPosition; // The x position of the button
@@ -21,6 +22,7 @@ public:
 	Button();
 	~Button();
 
+	sf::FloatRect getBoundingBox() const;
 	void draw(sf::RenderWindow& window); // Draws the button to the window
 };
 

@@ -49,6 +49,11 @@ sf::Vector2f Player::getPosition() {
 	return player.getPosition();
 }
 
+void Player::setPosition(float x, float y) {
+	player.setPosition(sf::Vector2f(x, y));
+	touchingGround = false;
+}
+
 bool Player::getTouchingGround() {
 	return touchingGround;
 }

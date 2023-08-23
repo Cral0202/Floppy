@@ -38,6 +38,7 @@ public:
 	const bool running() const; // Used to check if game/window is running
 	const bool gameEnded() const; // Used to check if game has ended
 	sf::RenderWindow* getWindow(); // Used to get the window
+	void resetGameState(); // Used to reset the game state
 	void pollEvents(); // Used to poll events
 	void update(); // Used to update game state
 	void render(); // Used to render game

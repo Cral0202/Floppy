@@ -28,8 +28,10 @@ int main() {
 			sf::sleep(sf::milliseconds(1));
 
 			// Changes gamestate if game is over
-			if (game.gameEnded())
+			if (game.gameEnded()) {
+				gameOverGUI.resetState();
 				gameState = GameState::GameOver;
+			}
 		}
 
 		// Runs while player is dead
@@ -42,6 +44,11 @@ int main() {
 
 			// Sleeps the while loop
 			sf::sleep(sf::milliseconds(1));
+
+			if (gameOverGUI.getShouldRestart()) {
+				game.resetGameState();
+				gameState = GameState::Playing;
+			}		
 		}
 	}
 
