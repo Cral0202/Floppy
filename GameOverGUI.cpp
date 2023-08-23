@@ -1,9 +1,7 @@
 #include "GameOverGUI.h"
 
 GameOverGUI::GameOverGUI(Game& game) : game(game) {
-	this->game = game;
 	initVariables();
-    initEntities();
 }
 
 GameOverGUI::~GameOverGUI() {
@@ -11,14 +9,7 @@ GameOverGUI::~GameOverGUI() {
 
 void GameOverGUI::initVariables() {
 	window = game.getWindow();
-    buttonHeight = 100.f;
-    buttonWidth = 250.f;
-}
-
-void GameOverGUI::initEntities() {
-    button.setPosition((400.f - buttonWidth / 2), (300.f - buttonHeight / 2));
-    button.setSize(sf::Vector2f(buttonWidth, buttonHeight));
-    button.setFillColor(sf::Color::Blue);
+    restartButton = Button(100.f, 250.f, (400.f - 250.f / 2), (300.f - 100.f / 2), sf::Color::Blue, "Restart");
 }
 
 void GameOverGUI::pollEvents() {
@@ -45,7 +36,7 @@ void GameOverGUI::update() {
 void GameOverGUI::render() {
 	window->clear(); // Clear old frame
 
-    window->draw(button);
+    restartButton.draw(*window); // Draws the restart button
 
 	window->display(); // Draws what has been rendered so far
 }
