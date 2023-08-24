@@ -1,8 +1,5 @@
 #include "Button.h"
 
-void Button::initVariables() {
-}
-
 Button::Button(float height, float width, float x, float y, sf::Color color, const std::string& text) : buttonHeight(height), buttonWidth(width), xPosition(x), yPosition(y), color(color) {
 	button.setSize(sf::Vector2f(width, height));
 	button.setPosition(x, y);
@@ -19,9 +16,8 @@ Button::Button(float height, float width, float x, float y, sf::Color color, con
     buttonText.setFillColor(sf::Color::White); // Set the text color
 
     // Calculate the position for the text based on the button's position and size
-    buttonText.setPosition(x + width / 4.f, y + height / 4.f);
+    buttonText.setPosition(x + width / 10.f, y + height / 5.f);
     buttonText.setFont(*font);
-    sf::FloatRect textBounds = buttonText.getLocalBounds();
 }
 
 Button::Button() : buttonHeight(0), buttonWidth(0), xPosition(0), yPosition(0), color(sf::Color::White) {
@@ -31,7 +27,6 @@ Button::Button() : buttonHeight(0), buttonWidth(0), xPosition(0), yPosition(0), 
 }
 
 Button::~Button() {
-    //delete font;
 }
 
 sf::FloatRect Button::getBoundingBox() const {

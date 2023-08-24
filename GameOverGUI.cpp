@@ -17,7 +17,7 @@ void GameOverGUI::resetState() {
 
 void GameOverGUI::initVariables() {
 	window = game.getWindow();
-    restartButton = Button(100.f, 250.f, (400.f - 250.f / 2), (300.f - 100.f / 2), sf::Color::Blue, "Restart");
+    restartButton = Button(100.f, 350.f, (400.f - 350.f / 2), (300.f - 100.f / 2), sf::Color::Blue, "Space to restart");
     shouldRestart = false;
 }
 
@@ -36,15 +36,10 @@ void GameOverGUI::pollEvents() {
             }
         }
 
-        // Restart button pressed
-        if (event.type == sf::Event::MouseButtonPressed) {
-            if (event.mouseButton.button == sf::Mouse::Left) {
-                sf::Vector2i mousePosition = sf::Mouse::getPosition(*window);
-                sf::FloatRect buttonBounds = restartButton.getBoundingBox();
-
-                if (buttonBounds.contains(static_cast<sf::Vector2f>(mousePosition))) {
-                    shouldRestart = true;
-                }
+        // Restart button pressed (spacebar)
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Space) {
+                shouldRestart = true;
             }
         }
     }

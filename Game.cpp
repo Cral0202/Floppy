@@ -124,11 +124,6 @@ void Game::update() {
         moveGame();
         spawnTowers();
     }
-
-    // Gets mouse position relative to the window
-    //std::cout << "Mouse pos: " << sf::Mouse::getPosition(*window).x << " " << sf::Mouse::getPosition(*window).y << std::endl;
-    
-    //std::cout << spawnTowerCounter << std::endl;
 }
 
 void Game::render() {

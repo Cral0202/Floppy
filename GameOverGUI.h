@@ -14,8 +14,10 @@ private:
 	Game& game; // The game instance
 
 	Button restartButton; // The restart button
+	float restartButtonWidth; // The width of the restart button
+	float restartButtonHeight; // The height of the restart button
 
-	bool shouldRestart;
+	bool shouldRestart; // If true game should restart
 public:
 	GameOverGUI(Game& game);
 	~GameOverGUI();
