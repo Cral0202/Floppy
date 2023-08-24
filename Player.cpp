@@ -38,7 +38,7 @@ void Player::move(float offset, float height) {
 }
 
 void Player::jump() {
-	velocity.y = -3.0f; // Adjust this value for the desired jump height
+	velocity.y = -3.5f; // Adjust this value for the desired jump height
 }
 
 void Player::draw(sf::RenderWindow& window) {

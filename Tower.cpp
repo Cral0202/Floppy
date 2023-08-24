@@ -13,7 +13,7 @@ Tower::~Tower() {
 
 void Tower::initVariables() {
     towerWidth = 50.f;
-    towerHeight = 200.f;
+    towerHeight = 230.f;
 }
 
 void Tower::move(float offset) {
