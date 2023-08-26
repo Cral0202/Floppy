@@ -13,10 +13,13 @@ private:
 	void initVariables(); // Initializes the variables
 public:
 	Tower(float x, float y);
+	Tower();
 	~Tower();
 	
 	void move(float offset); // Moves the towers
 	void draw(sf::RenderWindow& window); // Draws the towers to the window
+	float getHeight();
+	float getWidth();
 	sf::Vector2f getPosition(); // Returns the position of the tower
 	sf::FloatRect getBoundingBox() const; // Used for collision detection
 };

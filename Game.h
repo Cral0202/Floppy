@@ -16,6 +16,7 @@ private:
 
 	// Game objects
 	std::vector<Tower> towers;
+	Tower tower; // Acts as a reference for a tower
 	Player* player;
 
 	// Timer variables

@@ -18,7 +18,7 @@ void Game::initWindow() {
 void Game::initEntities() {
     // Inits the towers
     towers.emplace_back(800.f, 0.f); // Top tower
-    towers.emplace_back(800.f, (600.f - 200.f)); // Bottom tower
+    towers.emplace_back(800.f, (600.f - tower.getHeight())); // Bottom tower
 
     // Inits the player
     player = new Player(50.f, (videoMode.height / 2));
@@ -30,7 +30,7 @@ void Game::spawnTowers() {
         
         // Create new towers and add to the collection
         towers.emplace_back(800.f, 0.f); // Top tower
-        towers.emplace_back(800.f, (600.f - 200.f)); // Bottom tower
+        towers.emplace_back(800.f, (600.f - tower.getHeight())); // Bottom tower
     }
 }
 
@@ -156,7 +156,7 @@ void Game::resetGameState() {
 
     towers.clear(); // Removes all the towers
     towers.emplace_back(800.f, 0.f); // Top tower
-    towers.emplace_back(800.f, (600.f - 200.f)); // Bottom tower
+    towers.emplace_back(800.f, (600.f - tower.getHeight())); // Bottom tower
 
     player->setPosition(50.f, (videoMode.height / 2)); // Resets the player to spawn position
 }
