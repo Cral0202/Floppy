@@ -6,7 +6,7 @@ Button::Button(float height, float width, float x, float y, sf::Color color, con
 	button.setFillColor(color);
 
     // Use std::filesystem::path to construct the font file path
-    std::filesystem::path fontPath = std::filesystem::current_path() / "assets" / "ARIAL.TTF";
+    std::filesystem::path fontPath = std::filesystem::current_path() / "assets" / "fonts" / "ARIAL.TTF";
 
     font = std::make_shared<sf::Font>(); // Allocate the font
     //Load and check the availability of the font file

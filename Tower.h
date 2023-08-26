@@ -10,9 +10,11 @@ private:
 	float towerHeight;
 	float towerWidth;
 
+	sf::Sprite towerSprite; // The tower sprite
+
 	void initVariables(); // Initializes the variables
 public:
-	Tower(float x, float y);
+	Tower(float x, float y, sf::Texture& texture);
 	Tower();
 	~Tower();
 	

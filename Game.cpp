@@ -9,7 +9,7 @@ void Game::initVariables() {
 
     // The text for the points
     // Use std::filesystem::path to construct the font file path
-    std::filesystem::path fontPath = std::filesystem::current_path() / "assets" / "ARIAL.TTF";
+    std::filesystem::path fontPath = std::filesystem::current_path() / "assets" / "fonts" / "ARIAL.TTF";
 
     font = std::make_shared<sf::Font>(); // Allocate the font
     //Load and check the availability of the font file
@@ -24,6 +24,20 @@ void Game::initVariables() {
     // Calculate the position for the text based on the button's position and size
     pointText.setPosition(300, 20);
     pointText.setFont(*font);
+
+
+    std::filesystem::path backgroundTexturePath = std::filesystem::current_path() / "assets" / "textures" / "game_background.png";
+    if (!backgroundTexture.loadFromFile(backgroundTexturePath.string())) {
+        std::cout << "No background textures!" << std::endl;
+    }
+    backgroundSprite.setTexture(backgroundTexture);
+    backgroundSprite.setPosition(0.f, 0.f); // Background position
+    backgroundSprite.setScale(0.417f, 0.56f);  // Background scale
+
+    std::filesystem::path towerTexturePath = std::filesystem::current_path() / "assets" / "textures" / "tower.png";
+    if (!towerTexture.loadFromFile(towerTexturePath.string())) {
+        std::cout << "No tower textures!" << std::endl;
+    }
 }
 
 void Game::initWindow() {
@@ -36,8 +50,8 @@ void Game::initWindow() {
 
 void Game::initEntities() {
     // Inits the towers
-    towers.emplace_back(800.f, 0.f); // Top tower
-    towers.emplace_back(800.f, (600.f - tower.getHeight())); // Bottom tower
+    towers.emplace_back(800.f, 0.f, towerTexture); // Top tower
+    towers.emplace_back(800.f, (600.f - tower.getHeight()), towerTexture); // Bottom tower
     colliders.emplace_back(tower.getWidth(), 600.f, 800.f, 0.f); // Collision between towers
 
     // Inits the player
@@ -49,8 +63,8 @@ void Game::spawnTowers() {
         spawnTowerCounter = 0;
         
         // Create new towers and add to the collection
-        towers.emplace_back(800.f, 0.f); // Top tower
-        towers.emplace_back(800.f, (600.f - tower.getHeight())); // Bottom tower
+        towers.emplace_back(800.f, 0.f, towerTexture); // Top tower
+        towers.emplace_back(800.f, (600.f - tower.getHeight()), towerTexture); // Bottom tower
         colliders.emplace_back(tower.getWidth(), 600.f, 800.f, 0.f); // Collision between towers
     }
 }
@@ -182,6 +196,9 @@ void Game::update() {
 void Game::render() {
     window->clear(); // Clear old frame
 
+    // Draw the background
+    window->draw(backgroundSprite);
+
     // Draw all towers
     for (Tower tower : towers) {
         tower.draw(*window);
@@ -212,8 +229,8 @@ void Game::resetGameState() {
     pointCounter = 0;
 
     towers.clear(); // Removes all the towers
-    towers.emplace_back(800.f, 0.f); // Top tower
-    towers.emplace_back(800.f, (600.f - tower.getHeight())); // Bottom tower
+    towers.emplace_back(800.f, 0.f, towerTexture); // Top tower
+    towers.emplace_back(800.f, (600.f - tower.getHeight()), towerTexture); // Bottom tower
     colliders.clear(); // Removes all the colliders
     colliders.emplace_back(tower.getWidth(), 600.f, 800.f, 0.f); // Collision between towers
 

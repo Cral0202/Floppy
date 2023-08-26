@@ -25,6 +25,10 @@ private:
 	sf::Text pointText; // The text of the point counter
 	std::shared_ptr<sf::Font> font; // The font, which uses a shared smart pointer
 
+	sf::Texture backgroundTexture; // The background texture
+	sf::Sprite backgroundSprite; // The background sprite
+	sf::Texture towerTexture; // The tower texture
+
 	// Timer variables
 	int spawnTowerCounter; // Keeps track of when towers should spawn
 	int pointCounter; // Keeps track of the player's points
