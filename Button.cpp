@@ -5,9 +5,12 @@ Button::Button(float height, float width, float x, float y, sf::Color color, con
 	button.setPosition(x, y);
 	button.setFillColor(color);
 
+    // Use std::filesystem::path to construct the font file path
+    std::filesystem::path fontPath = std::filesystem::current_path() / "assets" / "ARIAL.TTF";
+
     font = std::make_shared<sf::Font>(); // Allocate the font
     //Load and check the availability of the font file
-    if (!font->loadFromFile("C:/Programming Projects/C++/Floppy/ARIAL.TTF")) {
+    if (!font->loadFromFile(fontPath.string())) {
         std::cout << "can't load font" << std::endl;
     }
 
