@@ -4,6 +4,7 @@
 #include <SFML/System.hpp>
 #include <iostream>
 #include "Tower.h"
+#include "Collider.h"
 
 class Player {
 private:
@@ -22,10 +23,11 @@ public:
 	
 	void move(float offset´, float height); // Moves the player
 	void jump(); // Player jumps
-	void draw(sf::RenderWindow& window); // Draws the towers to the window
+	void draw(sf::RenderWindow& window); // Draws the player to the window
 	sf::Vector2f getPosition(); // Returns the position of the player
 	void setPosition(float x, float y);
 	bool getTouchingGround();
-	bool collidesWith(const Tower& tower) const; // Returns wether player is colliding with any towers
+	bool collidesWithTower(const Tower& tower) const; // Returns wether player is colliding with any towers
+	bool collidesWithCollider(const Collider& collider) const; // Returns wether player is colliding with any colliders
 };
 

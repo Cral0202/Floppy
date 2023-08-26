@@ -5,8 +5,10 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
+#include <filesystem>
 #include "Tower.h"
 #include "Player.h"
+#include "Collider.h"
 
 class Game {
 private:
@@ -15,18 +17,25 @@ private:
 	sf::VideoMode videoMode; // The videomode
 
 	// Game objects
-	std::vector<Tower> towers;
+	std::vector<Tower> towers; // A vector for the towers
 	Tower tower; // Acts as a reference for a tower
-	Player* player;
+	std::vector<Collider> colliders; // A vector for the colliders
+	Player* player; // The player
+
+	sf::Text pointText; // The text of the point counter
+	std::shared_ptr<sf::Font> font; // The font, which uses a shared smart pointer
 
 	// Timer variables
 	int spawnTowerCounter; // Keeps track of when towers should spawn
+	int pointCounter; // Keeps track of the player's points
 	bool startGame; // Keeps track of if game should start
 	bool endTheGame; // Keeps track of if game should end
 
 	void initVariables(); // Used to initialize variables
 	void initWindow(); // Used to initialize the window
 	void initEntities(); // Used to initialize the entities
+
+	void givePoint(Collider& collider);
 
 	void spawnTowers(); // Used to spawn towers
 	void moveGame(); // Used to move the game screen

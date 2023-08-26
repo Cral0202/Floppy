@@ -5,6 +5,25 @@ void Game::initVariables() {
     startGame = false;
     endTheGame = false;
     spawnTowerCounter = 0;
+    pointCounter = 0;
+
+    // The text for the points
+    // Use std::filesystem::path to construct the font file path
+    std::filesystem::path fontPath = std::filesystem::current_path() / "assets" / "ARIAL.TTF";
+
+    font = std::make_shared<sf::Font>(); // Allocate the font
+    //Load and check the availability of the font file
+    if (!font->loadFromFile(fontPath.string())) {
+        std::cout << "can't load font" << std::endl;
+    }
+
+    pointText.setString(std::to_string(pointCounter)); // Set the text content
+    pointText.setCharacterSize(40); // Set the character size
+    pointText.setFillColor(sf::Color::White); // Set the text color
+
+    // Calculate the position for the text based on the button's position and size
+    pointText.setPosition(400, 20);
+    pointText.setFont(*font);
 }
 
 void Game::initWindow() {
@@ -19,6 +38,7 @@ void Game::initEntities() {
     // Inits the towers
     towers.emplace_back(800.f, 0.f); // Top tower
     towers.emplace_back(800.f, (600.f - tower.getHeight())); // Bottom tower
+    colliders.emplace_back(tower.getWidth(), 600.f, 800.f, 0.f); // Collision between towers
 
     // Inits the player
     player = new Player(50.f, (videoMode.height / 2));
@@ -31,6 +51,7 @@ void Game::spawnTowers() {
         // Create new towers and add to the collection
         towers.emplace_back(800.f, 0.f); // Top tower
         towers.emplace_back(800.f, (600.f - tower.getHeight())); // Bottom tower
+        colliders.emplace_back(tower.getWidth(), 600.f, 800.f, 0.f); // Collision between towers
     }
 }
 
@@ -40,10 +61,25 @@ void Game::moveGame() {
         tower.move(-1.f);
     }
 
+    // Moves all of the colliders to the left
+    for (Collider& collider : colliders) {
+        collider.move(-1.f);
+    }
+
     // Deletes towers if they are outside of the window
     for (auto it = towers.begin(); it != towers.end();) {
         if (it->getPosition().x < -100) {
             it = towers.erase(it); // Erase and get the next iterator
+        }
+        else {
+            ++it;
+        }
+    }
+
+    // Deletes colliders if they are outside of the window
+    for (auto it = colliders.begin(); it != colliders.end();) {
+        if (it->getPosition().x < -100) {
+            it = colliders.erase(it); // Erase and get the next iterator
         }
         else {
             ++it;
@@ -65,6 +101,14 @@ Game::Game() {
 	initVariables();
 	initWindow();
     initEntities();
+}
+
+void Game::givePoint(Collider& collider) {
+    if (!collider.getHasCollided()) {
+        collider.collides();
+        pointCounter++;
+        pointText.setString(std::to_string(pointCounter)); // Set the text content
+    }
 }
 
 Game::~Game() {
@@ -110,7 +154,7 @@ void Game::update() {
     if (startGame) {
         // Collision detection logic
         for (const Tower tower : towers) {
-            if (player->collidesWith(tower)) {
+            if (player->collidesWithTower(tower)) {
                 // Collision occurred
                 endGame();
             }
@@ -118,6 +162,13 @@ void Game::update() {
         if (player->getTouchingGround()) {
             // Collision occurred
             endGame();
+        }
+        
+        for (Collider& collider : colliders) {
+            if (player->collidesWithCollider(collider)) {
+                // Player went between towers
+                givePoint(collider);
+            }
         }
 
         // Keeps the game state flowing
@@ -137,6 +188,9 @@ void Game::render() {
     // Draws the player
     player->draw(*window);
 
+    // Draws the point counter text
+    window->draw(pointText);
+
     window->display(); // Draws what has been rendered so far
 }
 
@@ -153,10 +207,15 @@ void Game::resetGameState() {
     endTheGame = false;
     startGame = false;
     spawnTowerCounter = 0;
+    pointCounter = 0;
 
     towers.clear(); // Removes all the towers
     towers.emplace_back(800.f, 0.f); // Top tower
     towers.emplace_back(800.f, (600.f - tower.getHeight())); // Bottom tower
+    colliders.clear(); // Removes all the colliders
+    colliders.emplace_back(tower.getWidth(), 600.f, 800.f, 0.f); // Collision between towers
 
     player->setPosition(50.f, (videoMode.height / 2)); // Resets the player to spawn position
+
+    pointText.setString(("0")); // Set the text content
 }

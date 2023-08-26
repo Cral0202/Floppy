@@ -58,8 +58,19 @@ bool Player::getTouchingGround() {
 	return touchingGround;
 }
 
+bool Player::collidesWithCollider(const Collider& collider) const {
+	// Calculate player's bounding box
+	sf::FloatRect playerBounds = player.getGlobalBounds();
+
+	// Calculate tower's bounding box
+	sf::FloatRect colliderBounds = collider.getBoundingBox();
+
+	// Check for intersection
+	return playerBounds.intersects(colliderBounds);
+}
+
 // Inside Player class
-bool Player::collidesWith(const Tower& tower) const {
+bool Player::collidesWithTower(const Tower& tower) const {
 	// Calculate player's bounding box
 	sf::FloatRect playerBounds = player.getGlobalBounds();
 
