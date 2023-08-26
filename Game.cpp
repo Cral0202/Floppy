@@ -17,12 +17,12 @@ void Game::initVariables() {
         std::cout << "can't load font" << std::endl;
     }
 
-    pointText.setString(std::to_string(pointCounter)); // Set the text content
+    pointText.setString(("Space to start")); // Set the text content
     pointText.setCharacterSize(40); // Set the character size
     pointText.setFillColor(sf::Color::White); // Set the text color
 
     // Calculate the position for the text based on the button's position and size
-    pointText.setPosition(400, 20);
+    pointText.setPosition(300, 20);
     pointText.setFont(*font);
 }
 
@@ -139,6 +139,8 @@ void Game::pollEvents() {
             if (event.key.code == sf::Keyboard::Space) {
                 if (!startGame) {
                     startGame = true;
+                    pointText.setString(std::to_string(pointCounter)); // Set the text content
+                    pointText.setPosition(400, 20);
                 }
 
                 player->jump();              
@@ -217,5 +219,6 @@ void Game::resetGameState() {
 
     player->setPosition(50.f, (videoMode.height / 2)); // Resets the player to spawn position
 
-    pointText.setString(("0")); // Set the text content
+    pointText.setPosition(300, 20); // Sets the position of the point counter text
+    pointText.setString(("Space to start")); // Set the text content
 }
