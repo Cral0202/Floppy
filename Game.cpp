@@ -19,13 +19,13 @@ void Game::initVariables() {
 
     pointText.setString(("Space to start")); // Set the text content
     pointText.setCharacterSize(40); // Set the character size
-    pointText.setFillColor(sf::Color::White); // Set the text color
+    pointText.setFillColor(sf::Color::Black); // Set the text color
 
     // Calculate the position for the text based on the button's position and size
     pointText.setPosition(300, 20);
     pointText.setFont(*font);
 
-
+    // Gets the background textures
     std::filesystem::path backgroundTexturePath = std::filesystem::current_path() / "assets" / "textures" / "game_background.png";
     if (!backgroundTexture.loadFromFile(backgroundTexturePath.string())) {
         std::cout << "No background textures!" << std::endl;
@@ -34,9 +34,16 @@ void Game::initVariables() {
     backgroundSprite.setPosition(0.f, 0.f); // Background position
     backgroundSprite.setScale(0.417f, 0.56f);  // Background scale
 
+    // Gets the tower textures
     std::filesystem::path towerTexturePath = std::filesystem::current_path() / "assets" / "textures" / "tower.png";
     if (!towerTexture.loadFromFile(towerTexturePath.string())) {
         std::cout << "No tower textures!" << std::endl;
+    }
+
+    // Gets the player textures
+    std::filesystem::path playerTexturePath = std::filesystem::current_path() / "assets" / "textures" / "player.png";
+    if (!playerTexture.loadFromFile(playerTexturePath.string())) {
+        std::cout << "No player textures!" << std::endl;
     }
 }
 
@@ -55,7 +62,7 @@ void Game::initEntities() {
     colliders.emplace_back(tower.getWidth(), 600.f, 800.f, 0.f); // Collision between towers
 
     // Inits the player
-    player = new Player(50.f, (videoMode.height / 2));
+    player = new Player(50.f, (videoMode.height / 2), playerTexture);
 }
 
 void Game::spawnTowers() {

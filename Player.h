@@ -16,9 +16,11 @@ private:
 	sf::Vector2f velocity; // Velocity of the player
 	const float gravity = 0.05f; // Gravity effect
 
+	sf::Sprite playerSprite; // The player sprite
+
 	void initVariables(); // Initializes the variables
 public:
-	Player(float x, float y);
+	Player(float x, float y, sf::Texture& texture);
 	~Player();
 	
 	void move(float offset´, float height); // Moves the player

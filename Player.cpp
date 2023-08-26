@@ -1,11 +1,15 @@
 #include "Player.h"
 
-Player::Player(float x, float y) {
+Player::Player(float x, float y, sf::Texture& texture) {
 	initVariables();
 
 	player.setRadius(playerSize);
-	player.setFillColor(sf::Color::Red);
+	//player.setFillColor(sf::Color::Red);
 	player.setPosition(x, y);
+
+	playerSprite.setTexture(texture);
+	playerSprite.setPosition(x, y); // Background position
+	playerSprite.setScale(0.65f, 0.622f);  // Background scale
 }
 
 Player::~Player() {
@@ -22,7 +26,12 @@ void Player::move(float offset, float height) {
 
 	// Update the player's position based on velocity
 	player.move(sf::Vector2f(0.f, velocity.y));
+	playerSprite.move(sf::Vector2f(0.f, velocity.y));
 
+	if (velocity.y > 0)
+		playerSprite.setRotation(velocity.y * 6);
+	else if (velocity.y < 0)
+		playerSprite.setRotation(velocity.y * 3);
 	// Keep the player within the window bounds
 	// Makes it so player can't go under map
 	if (player.getPosition().y >= height - playerSize) {
@@ -42,7 +51,8 @@ void Player::jump() {
 }
 
 void Player::draw(sf::RenderWindow& window) {
-	window.draw(player);
+	//window.draw(player);
+	window.draw(playerSprite);
 }
 
 sf::Vector2f Player::getPosition() {
@@ -51,6 +61,7 @@ sf::Vector2f Player::getPosition() {
 
 void Player::setPosition(float x, float y) {
 	player.setPosition(sf::Vector2f(x, y));
+	playerSprite.setPosition(sf::Vector2f(x, y));
 	touchingGround = false;
 }
 

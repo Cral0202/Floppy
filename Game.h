@@ -28,6 +28,7 @@ private:
 	sf::Texture backgroundTexture; // The background texture
 	sf::Sprite backgroundSprite; // The background sprite
 	sf::Texture towerTexture; // The tower texture
+	sf::Texture playerTexture; // The player texture
 
 	// Timer variables
 	int spawnTowerCounter; // Keeps track of when towers should spawn
