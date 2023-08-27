@@ -30,7 +30,7 @@ void Tower::move(float offset) {
 }
 
 void Tower::draw(sf::RenderWindow& window) { 
-    window.draw(tower); // Draw the tower
+    //window.draw(tower); // Draw the tower
     window.draw(towerSprite); // Draw the tower sprite
 }
 
