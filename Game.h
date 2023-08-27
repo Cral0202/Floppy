@@ -23,6 +23,7 @@ private:
 	Player* player; // The player
 
 	sf::Text pointText; // The text of the point counter
+	sf::Text restartText; // The restart text
 	std::shared_ptr<sf::Font> font; // The font, which uses a shared smart pointer
 
 	sf::Texture backgroundTexture; // The background texture
@@ -40,21 +41,21 @@ private:
 	void initWindow(); // Used to initialize the window
 	void initEntities(); // Used to initialize the entities
 
-	void givePoint(Collider& collider);
+	void givePoint(Collider& collider); // Used to give a point to the player
+	void resetGameState(); // Used to reset the game state
 
 	void spawnTowers(); // Used to spawn towers
 	void moveGame(); // Used to move the game screen
 	void endGame(); // Used to end the game
+	void pollEvents(); // Used to poll events
 public:
 	// Constructor & Destructor
 	Game();
 	~Game();
 
 	const bool running() const; // Used to check if game/window is running
-	const bool gameEnded() const; // Used to check if game has ended
 	sf::RenderWindow* getWindow(); // Used to get the window
-	void resetGameState(); // Used to reset the game state
-	void pollEvents(); // Used to poll events
+	
 	void update(); // Used to update game state
 	void render(); // Used to render game
 };

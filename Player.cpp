@@ -28,20 +28,22 @@ void Player::move(float offset, float height) {
 	player.move(sf::Vector2f(0.f, velocity.y));
 	playerSprite.move(sf::Vector2f(0.f, velocity.y));
 
-	if (velocity.y > 0)
+	if (velocity.y > 0 && !touchingGround)
 		playerSprite.setRotation(velocity.y * 6);
-	else if (velocity.y < 0)
+	else if (velocity.y < 0 && !touchingGround)
 		playerSprite.setRotation(velocity.y * 3);
 	// Keep the player within the window bounds
 	// Makes it so player can't go under map
 	if (player.getPosition().y >= height - playerSize) {
 		player.setPosition(player.getPosition().x, height - playerSize);
+		playerSprite.setPosition(player.getPosition().x, height - playerSize);
 		velocity.y = 0.0f; // Reset velocity when player hits the ground
 		touchingGround = true;
 	}
 	// Makes it so player can't go above map
 	else if (player.getPosition().y <= 0 - playerSize) {
 		player.setPosition(player.getPosition().x, 0 - playerSize);
+		playerSprite.setPosition(player.getPosition().x, 0 - playerSize);
 		velocity.y = 0.0f; // Reset velocity when player hits the ground
 	}
 }
@@ -63,6 +65,10 @@ void Player::setPosition(float x, float y) {
 	player.setPosition(sf::Vector2f(x, y));
 	playerSprite.setPosition(sf::Vector2f(x, y));
 	touchingGround = false;
+}
+
+void Player::setSpriteRotation(float r) {
+	playerSprite.setRotation(r);
 }
 
 bool Player::getTouchingGround() {

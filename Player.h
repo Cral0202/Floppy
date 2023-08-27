@@ -28,6 +28,7 @@ public:
 	void draw(sf::RenderWindow& window); // Draws the player to the window
 	sf::Vector2f getPosition(); // Returns the position of the player
 	void setPosition(float x, float y);
+	void setSpriteRotation(float r);
 	bool getTouchingGround();
 	bool collidesWithTower(const Tower& tower) const; // Returns wether player is colliding with any towers
 	bool collidesWithCollider(const Collider& collider) const; // Returns wether player is colliding with any colliders

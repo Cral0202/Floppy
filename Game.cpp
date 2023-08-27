@@ -17,13 +17,19 @@ void Game::initVariables() {
         std::cout << "can't load font" << std::endl;
     }
 
-    pointText.setString(("Space to start")); // Set the text content
+    // Settings for the point counter text
+    pointText.setString(("Space to jump")); // Set the text content
     pointText.setCharacterSize(40); // Set the character size
     pointText.setFillColor(sf::Color::Black); // Set the text color
-
-    // Calculate the position for the text based on the button's position and size
-    pointText.setPosition(300, 20);
+    pointText.setPosition(290, 20);
     pointText.setFont(*font);
+
+    // Settings for the restart text
+    restartText.setString(("Space to restart")); // Set the text content
+    restartText.setCharacterSize(40); // Set the character size
+    restartText.setFillColor(sf::Color::White); // Set the text color
+    restartText.setPosition(270, 300);
+    restartText.setFont(*font);
 
     // Gets the background textures
     std::filesystem::path backgroundTexturePath = std::filesystem::current_path() / "assets" / "textures" / "game_background.png";
@@ -158,13 +164,18 @@ void Game::pollEvents() {
         // Moves the player if the spacebar is pressed
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Space) {
-                if (!startGame) {
+                if (!startGame && !endTheGame) {
                     startGame = true;
                     pointText.setString(std::to_string(pointCounter)); // Set the text content
                     pointText.setPosition(400, 20);
+                    
                 }
-
-                player->jump();              
+                if (endTheGame) {
+                    endTheGame = false;
+                    resetGameState();
+                    continue;
+                }
+                player->jump();
             }
         }
 
@@ -174,7 +185,7 @@ void Game::pollEvents() {
 void Game::update() {
     pollEvents();
 
-    if (startGame) {
+    if (startGame && !endTheGame) {
         // Collision detection logic
         for (const Tower tower : towers) {
             if (player->collidesWithTower(tower)) {
@@ -217,11 +228,11 @@ void Game::render() {
     // Draws the point counter text
     window->draw(pointText);
 
-    window->display(); // Draws what has been rendered so far
-}
+    if (endTheGame) {
+        window->draw(restartText);
+    }
 
-const bool Game::gameEnded() const {
-    return endTheGame;
+    window->display(); // Draws what has been rendered so far
 }
 
 sf::RenderWindow* Game::getWindow() {
@@ -242,7 +253,8 @@ void Game::resetGameState() {
     colliders.emplace_back(tower.getWidth(), 600.f, 800.f, 0.f); // Collision between towers
 
     player->setPosition(50.f, (videoMode.height / 2)); // Resets the player to spawn position
+    player->setSpriteRotation(0); // Sets the player sprite rotation back to 0
 
-    pointText.setPosition(300, 20); // Sets the position of the point counter text
-    pointText.setString(("Space to start")); // Set the text content
+    pointText.setPosition(290, 20); // Sets the position of the point counter text
+    pointText.setString(("Space to jump")); // Set the text content
 }
