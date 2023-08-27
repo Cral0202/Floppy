@@ -27,7 +27,7 @@ void Game::initVariables() {
     // Settings for the restart text
     restartText.setString(("Space to restart")); // Set the text content
     restartText.setCharacterSize(40); // Set the character size
-    restartText.setFillColor(sf::Color::White); // Set the text color
+    restartText.setFillColor(sf::Color::Red); // Set the text color
     restartText.setPosition(270, 300);
     restartText.setFont(*font);
 

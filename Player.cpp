@@ -4,7 +4,7 @@ Player::Player(float x, float y, sf::Texture& texture) {
 	initVariables();
 
 	player.setRadius(playerSize);
-	//player.setFillColor(sf::Color::Red);
+	player.setFillColor(sf::Color::Red);
 	player.setPosition(x, y);
 
 	playerSprite.setTexture(texture);
@@ -28,10 +28,10 @@ void Player::move(float offset, float height) {
 	player.move(sf::Vector2f(0.f, velocity.y));
 	playerSprite.move(sf::Vector2f(0.f, velocity.y));
 
-	if (velocity.y > 0 && !touchingGround)
+	/*if (velocity.y > 0 && !touchingGround)
 		playerSprite.setRotation(velocity.y * 6);
 	else if (velocity.y < 0 && !touchingGround)
-		playerSprite.setRotation(velocity.y * 3);
+		playerSprite.setRotation(velocity.y * 3);*/
 	// Keep the player within the window bounds
 	// Makes it so player can't go under map
 	if (player.getPosition().y >= height - playerSize) {
