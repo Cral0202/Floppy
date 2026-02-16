@@ -1,263 +1,250 @@
 #include "Game.h"
 
 void Game::initVariables() {
-  window = nullptr;
-  startGame = false;
-  endTheGame = false;
-  spawnTowerCounter = 0;
-  pointCounter = 0;
+    window = nullptr;
+    startGame = false;
+    endTheGame = false;
 
-  // The text for the points
-  // Use std::filesystem::path to construct the font file path
-  std::filesystem::path fontPath =
-      std::filesystem::current_path() / "assets" / "fonts" / "ARIAL.TTF";
+    spawnTowerTimeCounter = 0;
+    playerScoreCounter = 0;
 
-  font = std::make_shared<sf::Font>(); // Allocate the font
-  // Load and check the availability of the font file
-  if (!font->loadFromFile(fontPath.string())) {
-    std::cout << "can't load font" << std::endl;
-  }
+    // Text
+    std::filesystem::path fontPath = std::filesystem::current_path() / "assets" / "fonts" / "ARIAL.TTF";
 
-  // Settings for the point counter text
-  pointText.setString(("Space to jump"));   // Set the text content
-  pointText.setCharacterSize(40);           // Set the character size
-  pointText.setFillColor(sf::Color::Black); // Set the text color
-  pointText.setPosition(290, 20);
-  pointText.setFont(*font);
+    font = std::make_shared<sf::Font>();
 
-  // Settings for the restart text
-  restartText.setString(("Space to restart")); // Set the text content
-  restartText.setCharacterSize(40);            // Set the character size
-  restartText.setFillColor(sf::Color::Red);    // Set the text color
-  restartText.setPosition(270, 300);
-  restartText.setFont(*font);
+    if (!font->loadFromFile(fontPath.string())) {
+        std::cout << "can't load font" << std::endl;
+    }
 
-  // Gets the background textures
-  std::filesystem::path backgroundTexturePath =
-      std::filesystem::current_path() / "assets" / "textures" /
-      "game_background.png";
-  if (!backgroundTexture.loadFromFile(backgroundTexturePath.string())) {
-    std::cout << "No background textures!" << std::endl;
-  }
-  backgroundSprite.setTexture(backgroundTexture);
-  backgroundSprite.setPosition(0.f, 0.f);   // Background position
-  backgroundSprite.setScale(0.417f, 0.56f); // Background scale
+    scoreCounterText.setString(("Space to jump"));
+    scoreCounterText.setCharacterSize(40);
+    scoreCounterText.setFillColor(sf::Color::Black);
+    scoreCounterText.setPosition(290, 20);
+    scoreCounterText.setFont(*font);
 
-  // Gets the tower textures
-  std::filesystem::path towerTexturePath =
-      std::filesystem::current_path() / "assets" / "textures" / "tower.png";
-  if (!towerTexture.loadFromFile(towerTexturePath.string())) {
-    std::cout << "No tower textures!" << std::endl;
-  }
+    restartText.setString(("Space to restart"));
+    restartText.setCharacterSize(40);
+    restartText.setFillColor(sf::Color::Red);
+    restartText.setPosition(270, 300);
+    restartText.setFont(*font);
 
-  // Gets the player textures
-  std::filesystem::path playerTexturePath =
-      std::filesystem::current_path() / "assets" / "textures" / "player.png";
-  if (!playerTexture.loadFromFile(playerTexturePath.string())) {
-    std::cout << "No player textures!" << std::endl;
-  }
+    // Background textures
+    std::filesystem::path backgroundTexturePath =
+        std::filesystem::current_path() / "assets" / "textures" / "game_background.png";
+
+    if (!backgroundTexture.loadFromFile(backgroundTexturePath.string())) {
+        std::cout << "No background textures!" << std::endl;
+    }
+
+    backgroundSprite.setTexture(backgroundTexture);
+    backgroundSprite.setPosition(0.f, 0.f);
+    backgroundSprite.setScale(0.417f, 0.56f);
+
+    // Tower textures
+    std::filesystem::path towerTexturePath = std::filesystem::current_path() / "assets" / "textures" / "tower.png";
+
+    if (!towerTexture.loadFromFile(towerTexturePath.string())) {
+        std::cout << "No tower textures!" << std::endl;
+    }
+
+    // Player textures
+    std::filesystem::path playerTexturePath = std::filesystem::current_path() / "assets" / "textures" / "player.png";
+
+    if (!playerTexture.loadFromFile(playerTexturePath.string())) {
+        std::cout << "No player textures!" << std::endl;
+    }
 }
 
 void Game::initWindow() {
-  videoMode.height = 600;
-  videoMode.width = 800;
-  window = new sf::RenderWindow(this->videoMode, "Floppy", sf::Style::Default);
+    videoMode.height = 600;
+    videoMode.width = 800;
+    window = new sf::RenderWindow(this->videoMode, "Floppy", sf::Style::Default);
 
-  window->setFramerateLimit(144);
+    window->setFramerateLimit(144);
 }
 
 void Game::initEntities() {
-  // Inits the towers
-  towers.emplace_back(800.f, 0.f, towerTexture); // Top tower
-  towers.emplace_back(800.f, (600.f - tower.getHeight()),
-                      towerTexture); // Bottom tower
-  colliders.emplace_back(tower.getWidth(), 600.f, 800.f,
-                         0.f); // Collision between towers
+    towers.emplace_back(800.f, 0.f, towerTexture);                         // Top tower
+    towers.emplace_back(800.f, (600.f - tower.getHeight()), towerTexture); // Bottom tower
+    colliders.emplace_back(tower.getWidth(), 600.f, 800.f, 0.f);           // Collision between towers
 
-  // Inits the player
-  player = new Player(50.f, (videoMode.height / 2), playerTexture);
+    player = new Player(50.f, (videoMode.height / 2), playerTexture);
 }
 
 void Game::spawnTowers() {
-  if (spawnTowerCounter == 400) {
-    spawnTowerCounter = 0;
+    if (spawnTowerTimeCounter == 400) {
+        spawnTowerTimeCounter = 0;
 
-    // Create new towers and add to the collection
-    towers.emplace_back(800.f, 0.f, towerTexture); // Top tower
-    towers.emplace_back(800.f, (600.f - tower.getHeight()),
-                        towerTexture); // Bottom tower
-    colliders.emplace_back(tower.getWidth(), 600.f, 800.f,
-                           0.f); // Collision between towers
-  }
+        // Create new towers and add to the collection
+        towers.emplace_back(800.f, 0.f, towerTexture);                         // Top tower
+        towers.emplace_back(800.f, (600.f - tower.getHeight()), towerTexture); // Bottom tower
+        colliders.emplace_back(tower.getWidth(), 600.f, 800.f, 0.f);           // Collision between towers
+    }
 }
 
 void Game::moveGame() {
-  // Moves all of the towers to the left
-  for (Tower &tower : towers) {
-    tower.move(-1.f);
-  }
-
-  // Moves all of the colliders to the left
-  for (Collider &collider : colliders) {
-    collider.move(-1.f);
-  }
-
-  // Deletes towers if they are outside of the window
-  for (auto it = towers.begin(); it != towers.end();) {
-    if (it->getPosition().x < -100) {
-      it = towers.erase(it); // Erase and get the next iterator
-    } else {
-      ++it;
+    // Moves all of the towers to the left
+    for (Tower &tower : towers) {
+        tower.move(-1.f);
     }
-  }
 
-  // Deletes colliders if they are outside of the window
-  for (auto it = colliders.begin(); it != colliders.end();) {
-    if (it->getPosition().x < -100) {
-      it = colliders.erase(it); // Erase and get the next iterator
-    } else {
-      ++it;
+    // Moves all of the colliders to the left
+    for (Collider &collider : colliders) {
+        collider.move(-1.f);
     }
-  }
 
-  // Moves the player
-  player->move(0.0f, videoMode.height);
+    // Deletes towers if they are outside of the window
+    for (auto it = towers.begin(); it != towers.end();) {
+        if (it->getPosition().x < -100) {
+            it = towers.erase(it);
+        } else {
+            ++it;
+        }
+    }
 
-  // Increments the spawn time counter for towers
-  spawnTowerCounter++;
+    // Deletes colliders if they are outside of the window
+    for (auto it = colliders.begin(); it != colliders.end();) {
+        if (it->getPosition().x < -100) {
+            it = colliders.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    player->move(0.0f, videoMode.height);
+    spawnTowerTimeCounter++;
 }
 
-void Game::endGame() { endTheGame = true; }
+void Game::endGame() {
+    endTheGame = true;
+}
 
 Game::Game() {
-  initVariables();
-  initWindow();
-  initEntities();
+    initVariables();
+    initWindow();
+    initEntities();
 }
 
-void Game::givePoint(Collider &collider) {
-  if (!collider.getHasCollided()) {
-    collider.collides();
-    pointCounter++;
-    pointText.setString(std::to_string(pointCounter)); // Set the text content
-  }
+void Game::givePointToPlayer(Collider &collider) {
+    if (!collider.getHasCollided()) {
+        collider.collides();
+        playerScoreCounter++;
+        scoreCounterText.setString(std::to_string(playerScoreCounter));
+    }
 }
 
 Game::~Game() {
-  delete window;
-  delete player;
+    delete window;
+    delete player;
 }
 
-const bool Game::running() const { return window->isOpen(); }
+const bool Game::running() const {
+    return window->isOpen();
+}
 
 void Game::pollEvents() {
-  while (window->pollEvent(event)) {
-    // Closes the window if exit button is pressed
-    if (event.type == sf::Event::Closed) {
-      window->close();
-      break;
-    }
-    // Closes the window if escape button is pressed
-    if (event.type == sf::Event::KeyPressed) {
-      if (event.key.code == sf::Keyboard::Escape) {
-        window->close();
-        break;
-      }
-    }
-    // Moves the player if the spacebar is pressed
-    if (event.type == sf::Event::KeyPressed) {
-      if (event.key.code == sf::Keyboard::Space) {
-        if (!startGame && !endTheGame) {
-          startGame = true;
-          pointText.setString(
-              std::to_string(pointCounter)); // Set the text content
-          pointText.setPosition(400, 20);
+    while (window->pollEvent(event)) {
+        // Closes the window if exit button is pressed
+        if (event.type == sf::Event::Closed) {
+            window->close();
+            break;
         }
-        if (endTheGame) {
-          endTheGame = false;
-          resetGameState();
-          continue;
+
+        // Closes the window if escape button is pressed
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Escape) {
+                window->close();
+                break;
+            }
         }
-        player->jump();
-      }
+
+        // Moves the player if the spacebar is pressed
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Space) {
+                if (!startGame && !endTheGame) {
+                    startGame = true;
+                    scoreCounterText.setString(std::to_string(playerScoreCounter));
+                    scoreCounterText.setPosition(400, 20);
+                }
+
+                if (endTheGame) {
+                    endTheGame = false;
+                    resetGameState();
+                    continue;
+                }
+
+                player->jump();
+            }
+        }
     }
-  }
 }
 
 void Game::update() {
-  pollEvents();
+    pollEvents();
 
-  if (startGame && !endTheGame) {
-    // Collision detection logic
-    for (const Tower tower : towers) {
-      if (player->collidesWithTower(tower)) {
-        // Collision occurred
-        endGame();
-      }
-    }
-    if (player->getTouchingGround()) {
-      // Collision occurred
-      endGame();
-    }
+    if (startGame && !endTheGame) {
+        // Collision detection logic
+        for (const Tower tower : towers) {
+            if (player->collidesWithTower(tower)) {
+                endGame();
+            }
+        }
 
-    for (Collider &collider : colliders) {
-      if (player->collidesWithCollider(collider)) {
-        // Player went between towers
-        givePoint(collider);
-      }
-    }
+        if (player->getTouchingGround()) {
+            endGame();
+        }
 
-    // Keeps the game state flowing
-    moveGame();
-    spawnTowers();
-  }
+        for (Collider &collider : colliders) {
+            if (player->collidesWithCollider(collider)) {
+                // Player went between towers
+                givePointToPlayer(collider);
+            }
+        }
+
+        moveGame();
+        spawnTowers();
+    }
 }
 
 void Game::render() {
-  window->clear(); // Clear old frame
+    window->clear();
+    window->draw(backgroundSprite);
 
-  // Draw the background
-  window->draw(backgroundSprite);
+    for (Tower tower : towers) {
+        tower.draw(*window);
+    }
 
-  // Draw all towers
-  for (Tower tower : towers) {
-    tower.draw(*window);
-  }
+    player->draw(*window);
+    window->draw(scoreCounterText);
 
-  // Draws the player
-  player->draw(*window);
+    if (endTheGame) {
+        window->draw(restartText);
+    }
 
-  // Draws the point counter text
-  window->draw(pointText);
-
-  if (endTheGame) {
-    window->draw(restartText);
-  }
-
-  window->display(); // Draws what has been rendered so far
+    window->display();
 }
 
-sf::RenderWindow *Game::getWindow() { return window; }
+sf::RenderWindow *Game::getWindow() {
+    return window;
+}
 
 void Game::resetGameState() {
-  // Resets the flags
-  endTheGame = false;
-  startGame = false;
-  spawnTowerCounter = 0;
-  pointCounter = 0;
+    endTheGame = false;
+    startGame = false;
+    spawnTowerTimeCounter = 0;
+    playerScoreCounter = 0;
 
-  towers.clear();                                // Removes all the towers
-  towers.emplace_back(800.f, 0.f, towerTexture); // Top tower
-  towers.emplace_back(800.f, (600.f - tower.getHeight()),
-                      towerTexture); // Bottom tower
-  colliders.clear();                 // Removes all the colliders
-  colliders.emplace_back(tower.getWidth(), 600.f, 800.f,
-                         0.f); // Collision between towers
+    towers.clear();
+    towers.emplace_back(800.f, 0.f, towerTexture);                         // Top tower
+    towers.emplace_back(800.f, (600.f - tower.getHeight()), towerTexture); // Bottom tower
 
-  player->setPosition(
-      50.f, (videoMode.height / 2)); // Resets the player to spawn position
-  player->setSpriteRotation(0); // Sets the player sprite rotation back to 0
+    colliders.clear();
+    colliders.emplace_back(tower.getWidth(), 600.f, 800.f, 0.f); // Collision between towers
 
-  pointText.setPosition(290, 20); // Sets the position of the point counter text
-  pointText.setString(("Space to jump")); // Set the text content
+    player->setPosition(50.f, (videoMode.height / 2)); // Resets the player to spawn position
+    player->setSpriteRotation(0);
+
+    scoreCounterText.setPosition(290, 20);
+    scoreCounterText.setString(("Space to jump"));
 }

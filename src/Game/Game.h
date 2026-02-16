@@ -11,51 +11,53 @@
 #include <iostream>
 
 class Game {
-private:
-  sf::RenderWindow *window; // The window
-  sf::Event event;          // The events
-  sf::VideoMode videoMode;  // The videomode
+  private:
+    sf::RenderWindow *window;
+    sf::Event event;
+    sf::VideoMode videoMode;
 
-  // Game objects
-  std::vector<Tower> towers;       // A vector for the towers
-  Tower tower;                     // Acts as a reference for a tower
-  std::vector<Collider> colliders; // A vector for the colliders
-  Player *player;                  // The player
+    // Game objects
+    std::vector<Tower> towers;
+    Tower tower;
+    std::vector<Collider> colliders;
+    Player *player;
 
-  sf::Text pointText;             // The text of the point counter
-  sf::Text restartText;           // The restart text
-  std::shared_ptr<sf::Font> font; // The font, which uses a shared smart pointer
+    // Textures/Text
+    sf::Text scoreCounterText;
+    sf::Text restartText;
+    std::shared_ptr<sf::Font> font;
 
-  sf::Texture backgroundTexture; // The background texture
-  sf::Sprite backgroundSprite;   // The background sprite
-  sf::Texture towerTexture;      // The tower texture
-  sf::Texture playerTexture;     // The player texture
+    // Textures
+    sf::Texture backgroundTexture;
+    sf::Sprite backgroundSprite;
+    sf::Texture towerTexture;
+    sf::Texture playerTexture;
 
-  // Timer variables
-  int spawnTowerCounter; // Keeps track of when towers should spawn
-  int pointCounter;      // Keeps track of the player's points
-  bool startGame;        // Keeps track of if game should start
-  bool endTheGame;       // Keeps track of if game should end
+    // Timer variables
+    int spawnTowerTimeCounter; // Keeps track of when towers should spawn
+    int playerScoreCounter;
+    bool startGame;
+    bool endTheGame;
 
-  void initVariables(); // Used to initialize variables
-  void initWindow();    // Used to initialize the window
-  void initEntities();  // Used to initialize the entities
+    void initVariables();
+    void initWindow();
+    void initEntities();
 
-  void givePoint(Collider &collider); // Used to give a point to the player
-  void resetGameState();              // Used to reset the game state
+    void givePointToPlayer(Collider &collider);
+    void resetGameState();
 
-  void spawnTowers(); // Used to spawn towers
-  void moveGame();    // Used to move the game screen
-  void endGame();     // Used to end the game
-  void pollEvents();  // Used to poll events
-public:
-  // Constructor & Destructor
-  Game();
-  ~Game();
+    void spawnTowers();
+    void moveGame();
+    void endGame();
+    void pollEvents();
 
-  const bool running() const;    // Used to check if game/window is running
-  sf::RenderWindow *getWindow(); // Used to get the window
+  public:
+    Game();
+    ~Game();
 
-  void update(); // Used to update game state
-  void render(); // Used to render game
+    const bool running() const;
+    sf::RenderWindow *getWindow();
+
+    void update();
+    void render();
 };
