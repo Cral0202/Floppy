@@ -21,10 +21,10 @@ class Game {
     std::vector<Collider> colliders;
     std::unique_ptr<Player> player;
 
-    // Textures/Text
+    // Text
     sf::Text scoreCounterText;
     sf::Text restartText;
-    std::shared_ptr<sf::Font> font;
+    sf::Font font;
 
     // Textures
     sf::Texture backgroundTexture;
@@ -32,12 +32,12 @@ class Game {
     sf::Texture towerTexture;
     sf::Texture playerTexture;
 
-    // Timer variables
     int spawnTowerTimeCounter = 0; // Keeps track of when towers should spawn
     int playerScoreCounter = 0;
     bool startGame = false;
     bool endTheGame = false;
 
+    void loadResources();
     void initVariables();
     void initWindow();
     void initEntities();
@@ -53,8 +53,8 @@ class Game {
   public:
     Game();
 
-    const bool isRunning() const { return window.isOpen(); }
-
     void update();
     void render();
+
+    const bool isRunning() const { return window.isOpen(); }
 };

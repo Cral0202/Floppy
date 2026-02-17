@@ -1,58 +1,48 @@
 #include "Game.h"
 
 Game::Game() {
+    loadResources();
     initVariables();
     initWindow();
     initEntities();
 }
 
-void Game::initVariables() {
-    // Text
-    std::filesystem::path fontPath = std::filesystem::current_path() / "assets" / "fonts" / "ARIAL.TTF";
-
-    font = std::make_shared<sf::Font>();
-
-    if (!font->loadFromFile(fontPath.string())) {
-        std::cout << "can't load font" << std::endl;
+void Game::loadResources() {
+    if (!font.loadFromFile("assets/fonts/ARIAL.TTF")) {
+        throw std::runtime_error("Font missing.");
     }
 
+    if (!backgroundTexture.loadFromFile("assets/textures/game_background.png")) {
+        throw std::runtime_error("Background texture missing.");
+    }
+
+    if (!towerTexture.loadFromFile("assets/textures/tower.png")) {
+        throw std::runtime_error("Tower texture missing.");
+    }
+
+    if (!playerTexture.loadFromFile("assets/textures/player.png")) {
+        throw std::runtime_error("Player texture missing.");
+    }
+}
+
+void Game::initVariables() {
+    // Text
     scoreCounterText.setString(("Space to jump"));
     scoreCounterText.setCharacterSize(40);
     scoreCounterText.setFillColor(sf::Color::Black);
     scoreCounterText.setPosition(290, 20);
-    scoreCounterText.setFont(*font);
+    scoreCounterText.setFont(font);
 
     restartText.setString(("Space to restart"));
     restartText.setCharacterSize(40);
     restartText.setFillColor(sf::Color::Red);
     restartText.setPosition(270, 300);
-    restartText.setFont(*font);
+    restartText.setFont(font);
 
     // Background textures
-    std::filesystem::path backgroundTexturePath =
-        std::filesystem::current_path() / "assets" / "textures" / "game_background.png";
-
-    if (!backgroundTexture.loadFromFile(backgroundTexturePath.string())) {
-        std::cout << "No background textures!" << std::endl;
-    }
-
     backgroundSprite.setTexture(backgroundTexture);
     backgroundSprite.setPosition(0.f, 0.f);
     backgroundSprite.setScale(0.417f, 0.56f);
-
-    // Tower textures
-    std::filesystem::path towerTexturePath = std::filesystem::current_path() / "assets" / "textures" / "tower.png";
-
-    if (!towerTexture.loadFromFile(towerTexturePath.string())) {
-        std::cout << "No tower textures!" << std::endl;
-    }
-
-    // Player textures
-    std::filesystem::path playerTexturePath = std::filesystem::current_path() / "assets" / "textures" / "player.png";
-
-    if (!playerTexture.loadFromFile(playerTexturePath.string())) {
-        std::cout << "No player textures!" << std::endl;
-    }
 }
 
 void Game::initWindow() {
@@ -124,37 +114,48 @@ void Game::givePointToPlayer(Collider &collider) {
 
 void Game::pollEvents() {
     while (window.pollEvent(event)) {
+
+        switch (event.type) {
+
         // Closes the window if exit button is pressed
-        if (event.type == sf::Event::Closed) {
+        case sf::Event::Closed:
             window.close();
             break;
-        }
 
-        // Closes the window if escape button is pressed
-        if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Escape) {
+        // Handles keyboard input
+        case sf::Event::KeyPressed:
+            switch (event.key.code) {
+
+            // Closes the window if escape button is pressed
+            case sf::Keyboard::Escape:
                 window.close();
                 break;
-            }
-        }
 
-        // Moves the player if the spacebar is pressed
-        if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Space) {
+            // Moves the player if the spacebar is pressed
+            case sf::Keyboard::Space:
+
+                // Starts the game if it hasn't started yet
                 if (!startGame && !endTheGame) {
                     startGame = true;
                     scoreCounterText.setString(std::to_string(playerScoreCounter));
                     scoreCounterText.setPosition(400, 20);
                 }
-
-                if (endTheGame) {
+                // Resets the game if it has ended
+                else if (endTheGame) {
                     endTheGame = false;
                     resetGameState();
-                    continue;
                 }
 
                 player->jump();
+                break;
+
+            default:
+                break;
             }
+            break;
+
+        default:
+            break;
         }
     }
 }
