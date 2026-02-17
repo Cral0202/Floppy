@@ -54,7 +54,6 @@ class Game {
     Game();
 
     const bool isRunning() const { return window.isOpen(); }
-    sf::RenderWindow *getWindow();
 
     void update();
     void render();

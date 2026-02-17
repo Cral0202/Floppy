@@ -13,8 +13,7 @@ class Collider {
 
     void move(float offset);
     void collides();
-    bool getHasCollided() const;
-    void draw(sf::RenderWindow &window) const;
+    bool getHasCollided() const { return hasCollided; }
 
     sf::Vector2f getPosition() const { return collider.getPosition(); }
     sf::FloatRect getBoundingBox() const { return collider.getGlobalBounds(); }

@@ -1,5 +1,11 @@
 #include "Game.h"
 
+Game::Game() {
+    initVariables();
+    initWindow();
+    initEntities();
+}
+
 void Game::initVariables() {
     // Text
     std::filesystem::path fontPath = std::filesystem::current_path() / "assets" / "fonts" / "ARIAL.TTF";
@@ -112,12 +118,6 @@ void Game::endGame() {
     endTheGame = true;
 }
 
-Game::Game() {
-    initVariables();
-    initWindow();
-    initEntities();
-}
-
 void Game::givePointToPlayer(Collider &collider) {
     if (!collider.getHasCollided()) {
         collider.collides();
@@ -208,22 +208,14 @@ void Game::render() {
     window.display();
 }
 
-sf::RenderWindow *Game::getWindow() {
-    return &window;
-}
-
 void Game::resetGameState() {
     endTheGame = false;
     startGame = false;
-    spawnTowerTimeCounter = 0;
     playerScoreCounter = 0;
 
     towers.clear();
-    towers.emplace_back(800.f, 0.f, towerTexture);                                  // Top tower
-    towers.emplace_back(800.f, (600.f - TowerConfig::DefaultHeight), towerTexture); // Bottom tower
-
     colliders.clear();
-    colliders.emplace_back(TowerConfig::DefaultWidth, 600.f, 800.f, 0.f); // Collision between towers
+    spawnTowers(true);
 
     player->setPosition(50.f, (videoMode.height / 2)); // Resets the player to spawn position
     player->setSpriteRotation(0);

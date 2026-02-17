@@ -15,11 +15,3 @@ void Collider::move(float offset) {
 void Collider::collides() {
     hasCollided = true;
 }
-
-bool Collider::getHasCollided() const {
-    return hasCollided;
-}
-
-void Collider::draw(sf::RenderWindow &window) const {
-    window.draw(collider);
-}
