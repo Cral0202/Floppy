@@ -1,23 +1,13 @@
 #include "Player.h"
 
 Player::Player(float x, float y, sf::Texture &texture) {
-    initVariables();
-
     player.setRadius(playerSize);
     player.setFillColor(sf::Color::Red);
     player.setPosition(x, y);
 
     playerSprite.setTexture(texture);
     playerSprite.setPosition(x, y);
-    playerSprite.setScale(0.65f, 0.622f);
-}
-
-Player::~Player() {
-}
-
-void Player::initVariables() {
-    playerSize = 20.f;
-    touchingGround = false;
+    playerSprite.setScale(playerSpriteXScale, playerSpriteYScale);
 }
 
 void Player::move(float offset, float height) {
@@ -44,15 +34,11 @@ void Player::move(float offset, float height) {
 }
 
 void Player::jump() {
-    velocity.y = -3.5f;
+    velocity.y = jumpHeight;
 }
 
-void Player::draw(sf::RenderWindow &window) {
+void Player::draw(sf::RenderWindow &window) const {
     window.draw(playerSprite);
-}
-
-sf::Vector2f Player::getPosition() {
-    return player.getPosition();
 }
 
 void Player::setPosition(float x, float y) {
@@ -63,10 +49,6 @@ void Player::setPosition(float x, float y) {
 
 void Player::setSpriteRotation(float r) {
     playerSprite.setRotation(r);
-}
-
-bool Player::getTouchingGround() {
-    return touchingGround;
 }
 
 bool Player::collidesWithCollider(const Collider &collider) const {

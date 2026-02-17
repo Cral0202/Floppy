@@ -1,5 +1,7 @@
 BasedOnStyle: LLVM
 BreakBeforeBraces: Attach
-AllowShortFunctionsOnASingleLine: None
+AllowShortFunctionsOnASingleLine: Inline
 IndentWidth: 4
 ColumnLimit: 120
+FixNamespaceComments: false
+NamespaceIndentation: All

@@ -18,7 +18,6 @@ class Game {
 
     // Game objects
     std::vector<Tower> towers;
-    Tower tower;
     std::vector<Collider> colliders;
     Player *player;
 

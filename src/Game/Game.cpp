@@ -65,9 +65,9 @@ void Game::initWindow() {
 }
 
 void Game::initEntities() {
-    towers.emplace_back(800.f, 0.f, towerTexture);                         // Top tower
-    towers.emplace_back(800.f, (600.f - tower.getHeight()), towerTexture); // Bottom tower
-    colliders.emplace_back(tower.getWidth(), 600.f, 800.f, 0.f);           // Collision between towers
+    towers.emplace_back(800.f, 0.f, towerTexture);                                  // Top tower
+    towers.emplace_back(800.f, (600.f - TowerConfig::DefaultHeight), towerTexture); // Bottom tower
+    colliders.emplace_back(TowerConfig::DefaultWidth, 600.f, 800.f, 0.f);           // Collision between towers
 
     player = new Player(50.f, (videoMode.height / 2), playerTexture);
 }
@@ -77,9 +77,9 @@ void Game::spawnTowers() {
         spawnTowerTimeCounter = 0;
 
         // Create new towers and add to the collection
-        towers.emplace_back(800.f, 0.f, towerTexture);                         // Top tower
-        towers.emplace_back(800.f, (600.f - tower.getHeight()), towerTexture); // Bottom tower
-        colliders.emplace_back(tower.getWidth(), 600.f, 800.f, 0.f);           // Collision between towers
+        towers.emplace_back(800.f, 0.f, towerTexture);                                  // Top tower
+        towers.emplace_back(800.f, (600.f - TowerConfig::DefaultHeight), towerTexture); // Bottom tower
+        colliders.emplace_back(TowerConfig::DefaultWidth, 600.f, 800.f, 0.f);           // Collision between towers
     }
 }
 
@@ -185,7 +185,7 @@ void Game::update() {
 
     if (startGame && !endTheGame) {
         // Collision detection logic
-        for (const Tower tower : towers) {
+        for (const Tower &tower : towers) {
             if (player->collidesWithTower(tower)) {
                 endGame();
             }
@@ -211,7 +211,7 @@ void Game::render() {
     window->clear();
     window->draw(backgroundSprite);
 
-    for (Tower tower : towers) {
+    for (const Tower &tower : towers) {
         tower.draw(*window);
     }
 
@@ -236,11 +236,11 @@ void Game::resetGameState() {
     playerScoreCounter = 0;
 
     towers.clear();
-    towers.emplace_back(800.f, 0.f, towerTexture);                         // Top tower
-    towers.emplace_back(800.f, (600.f - tower.getHeight()), towerTexture); // Bottom tower
+    towers.emplace_back(800.f, 0.f, towerTexture);                                  // Top tower
+    towers.emplace_back(800.f, (600.f - TowerConfig::DefaultHeight), towerTexture); // Bottom tower
 
     colliders.clear();
-    colliders.emplace_back(tower.getWidth(), 600.f, 800.f, 0.f); // Collision between towers
+    colliders.emplace_back(TowerConfig::DefaultWidth, 600.f, 800.f, 0.f); // Collision between towers
 
     player->setPosition(50.f, (videoMode.height / 2)); // Resets the player to spawn position
     player->setSpriteRotation(0);

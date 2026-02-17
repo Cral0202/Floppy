@@ -9,27 +9,29 @@
 class Player {
   private:
     sf::CircleShape player;
-    sf::Sprite playerSprite;
-
-    float playerSize;
-    bool touchingGround;
-
     sf::Vector2f velocity;
-    const float gravity = 0.05f;
 
-    void initVariables();
+    sf::Sprite playerSprite;
+    const float playerSpriteXScale = 0.65f;
+    const float playerSpriteYScale = 0.622f;
+
+    const float gravity = 0.05f;
+    const float jumpHeight = -3.5f;
+    const float playerSize = 20.f;
+
+    bool touchingGround = false;
 
   public:
     Player(float x, float y, sf::Texture &texture);
-    ~Player();
 
-    void move(float offset�, float height);
+    void move(float offset, float height);
     void jump();
-    void draw(sf::RenderWindow &window);
-    sf::Vector2f getPosition();
+    void draw(sf::RenderWindow &window) const;
     void setPosition(float x, float y);
     void setSpriteRotation(float r);
-    bool getTouchingGround();
     bool collidesWithTower(const Tower &tower) const;
     bool collidesWithCollider(const Collider &collider) const;
+
+    bool getTouchingGround() const { return touchingGround; }
+    sf::Vector2f getPosition() const { return player.getPosition(); }
 };

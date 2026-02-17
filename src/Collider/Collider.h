@@ -10,12 +10,12 @@ class Collider {
 
   public:
     Collider(float width, float height, float x, float y);
-    ~Collider();
 
     void move(float offset);
     void collides();
-    bool getHasCollided();
-    sf::Vector2f getPosition();
-    sf::FloatRect getBoundingBox() const;
-    void draw(sf::RenderWindow &window);
+    bool getHasCollided() const;
+    void draw(sf::RenderWindow &window) const;
+
+    sf::Vector2f getPosition() const { return collider.getPosition(); }
+    sf::FloatRect getBoundingBox() const { return collider.getGlobalBounds(); }
 };
