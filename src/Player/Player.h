@@ -6,8 +6,12 @@
 #include <SFML/System.hpp>
 #include <iostream>
 
-class Player {
+class Player : public sf::Drawable {
   private:
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
+        target.draw(playerSprite, states);
+    }
+
     sf::CircleShape player;
     sf::Vector2f velocity;
 
@@ -26,7 +30,6 @@ class Player {
 
     void move(float offset, float height);
     void jump();
-    void draw(sf::RenderWindow &window) const;
     void setPosition(float x, float y);
     void setSpriteRotation(float r);
     bool collidesWithTower(const Tower &tower) const;

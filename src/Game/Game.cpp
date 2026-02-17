@@ -1,13 +1,6 @@
 #include "Game.h"
 
 void Game::initVariables() {
-    window = nullptr;
-    startGame = false;
-    endTheGame = false;
-
-    spawnTowerTimeCounter = 0;
-    playerScoreCounter = 0;
-
     // Text
     std::filesystem::path fontPath = std::filesystem::current_path() / "assets" / "fonts" / "ARIAL.TTF";
 
@@ -59,28 +52,27 @@ void Game::initVariables() {
 void Game::initWindow() {
     videoMode.height = 600;
     videoMode.width = 800;
-    window = new sf::RenderWindow(this->videoMode, "Floppy", sf::Style::Default);
+    window.create(this->videoMode, "Floppy", sf::Style::Default);
 
-    window->setFramerateLimit(144);
+    window.setFramerateLimit(144);
 }
 
 void Game::initEntities() {
+    spawnTowers(true);
+    player = std::make_unique<Player>(50.f, (videoMode.height / 2.f), playerTexture);
+}
+
+void Game::spawnTowers(bool force) {
+    if (spawnTowerTimeCounter < 400 && !force) {
+        return;
+    }
+
+    spawnTowerTimeCounter = 0;
+
+    // Create new towers and add to the collection
     towers.emplace_back(800.f, 0.f, towerTexture);                                  // Top tower
     towers.emplace_back(800.f, (600.f - TowerConfig::DefaultHeight), towerTexture); // Bottom tower
     colliders.emplace_back(TowerConfig::DefaultWidth, 600.f, 800.f, 0.f);           // Collision between towers
-
-    player = new Player(50.f, (videoMode.height / 2), playerTexture);
-}
-
-void Game::spawnTowers() {
-    if (spawnTowerTimeCounter == 400) {
-        spawnTowerTimeCounter = 0;
-
-        // Create new towers and add to the collection
-        towers.emplace_back(800.f, 0.f, towerTexture);                                  // Top tower
-        towers.emplace_back(800.f, (600.f - TowerConfig::DefaultHeight), towerTexture); // Bottom tower
-        colliders.emplace_back(TowerConfig::DefaultWidth, 600.f, 800.f, 0.f);           // Collision between towers
-    }
 }
 
 void Game::moveGame() {
@@ -134,27 +126,18 @@ void Game::givePointToPlayer(Collider &collider) {
     }
 }
 
-Game::~Game() {
-    delete window;
-    delete player;
-}
-
-const bool Game::running() const {
-    return window->isOpen();
-}
-
 void Game::pollEvents() {
-    while (window->pollEvent(event)) {
+    while (window.pollEvent(event)) {
         // Closes the window if exit button is pressed
         if (event.type == sf::Event::Closed) {
-            window->close();
+            window.close();
             break;
         }
 
         // Closes the window if escape button is pressed
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Escape) {
-                window->close();
+                window.close();
                 break;
             }
         }
@@ -208,25 +191,25 @@ void Game::update() {
 }
 
 void Game::render() {
-    window->clear();
-    window->draw(backgroundSprite);
+    window.clear();
+    window.draw(backgroundSprite);
 
     for (const Tower &tower : towers) {
-        tower.draw(*window);
+        window.draw(tower);
     }
 
-    player->draw(*window);
-    window->draw(scoreCounterText);
+    window.draw(*player);
+    window.draw(scoreCounterText);
 
     if (endTheGame) {
-        window->draw(restartText);
+        window.draw(restartText);
     }
 
-    window->display();
+    window.display();
 }
 
 sf::RenderWindow *Game::getWindow() {
-    return window;
+    return &window;
 }
 
 void Game::resetGameState() {

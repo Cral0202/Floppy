@@ -37,10 +37,6 @@ void Player::jump() {
     velocity.y = jumpHeight;
 }
 
-void Player::draw(sf::RenderWindow &window) const {
-    window.draw(playerSprite);
-}
-
 void Player::setPosition(float x, float y) {
     player.setPosition(sf::Vector2f(x, y));
     playerSprite.setPosition(sf::Vector2f(x, y));

@@ -14,7 +14,3 @@ void Tower::move(float offset) {
     tower.move(sf::Vector2f(offset, 0.f));
     towerSprite.move(sf::Vector2f(offset, 0.f));
 }
-
-void Tower::draw(sf::RenderWindow &window) const {
-    window.draw(towerSprite);
-}

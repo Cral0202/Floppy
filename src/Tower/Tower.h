@@ -9,8 +9,12 @@ namespace TowerConfig {
     const float ScaleY = 0.185f;
 }
 
-class Tower {
+class Tower : public sf::Drawable {
   private:
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
+        target.draw(towerSprite, states);
+    }
+
     sf::RectangleShape tower;
     sf::Sprite towerSprite;
 
@@ -21,7 +25,6 @@ class Tower {
     Tower(float x, float y, sf::Texture &texture, float h = TowerConfig::DefaultHeight);
 
     void move(float offset);
-    void draw(sf::RenderWindow &window) const;
 
     float getHeight() const { return height; }
     float getWidth() const { return width; }

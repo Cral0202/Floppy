@@ -3,7 +3,7 @@
 int main() {
     Game game;
 
-    while (game.running()) {
+    while (game.isRunning()) {
         game.update();
         game.render();
     }

@@ -12,14 +12,14 @@
 
 class Game {
   private:
-    sf::RenderWindow *window;
+    sf::RenderWindow window;
     sf::Event event;
     sf::VideoMode videoMode;
 
     // Game objects
     std::vector<Tower> towers;
     std::vector<Collider> colliders;
-    Player *player;
+    std::unique_ptr<Player> player;
 
     // Textures/Text
     sf::Text scoreCounterText;
@@ -33,10 +33,10 @@ class Game {
     sf::Texture playerTexture;
 
     // Timer variables
-    int spawnTowerTimeCounter; // Keeps track of when towers should spawn
-    int playerScoreCounter;
-    bool startGame;
-    bool endTheGame;
+    int spawnTowerTimeCounter = 0; // Keeps track of when towers should spawn
+    int playerScoreCounter = 0;
+    bool startGame = false;
+    bool endTheGame = false;
 
     void initVariables();
     void initWindow();
@@ -45,16 +45,15 @@ class Game {
     void givePointToPlayer(Collider &collider);
     void resetGameState();
 
-    void spawnTowers();
+    void spawnTowers(bool force = false);
     void moveGame();
     void endGame();
     void pollEvents();
 
   public:
     Game();
-    ~Game();
 
-    const bool running() const;
+    const bool isRunning() const { return window.isOpen(); }
     sf::RenderWindow *getWindow();
 
     void update();
