@@ -29,9 +29,9 @@ class Player : public sf::Drawable {
     Player(float x, float y, sf::Texture &texture);
 
     void move(float offset, float height);
-    void jump();
+    void jump() { velocity.y = jumpHeight; }
     void setPosition(float x, float y);
-    void setSpriteRotation(float r);
+    void setSpriteRotation(float r) { playerSprite.setRotation(r); }
     bool collidesWithTower(const Tower &tower) const;
     bool collidesWithCollider(const Collider &collider) const;
 

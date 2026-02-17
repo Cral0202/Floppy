@@ -6,13 +6,13 @@
 class Collider {
   private:
     sf::RectangleShape collider;
-    bool hasCollided;
+    bool hasCollided = false;
 
   public:
     Collider(float width, float height, float x, float y);
 
-    void move(float offset);
-    void collides();
+    void move(float offset) { collider.move(sf::Vector2f(offset, 0.f)); }
+    void collides() { hasCollided = true; }
     bool getHasCollided() const { return hasCollided; }
 
     sf::Vector2f getPosition() const { return collider.getPosition(); }

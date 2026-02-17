@@ -33,18 +33,10 @@ void Player::move(float offset, float height) {
     }
 }
 
-void Player::jump() {
-    velocity.y = jumpHeight;
-}
-
 void Player::setPosition(float x, float y) {
     player.setPosition(sf::Vector2f(x, y));
     playerSprite.setPosition(sf::Vector2f(x, y));
     touchingGround = false;
-}
-
-void Player::setSpriteRotation(float r) {
-    playerSprite.setRotation(r);
 }
 
 bool Player::collidesWithCollider(const Collider &collider) const {

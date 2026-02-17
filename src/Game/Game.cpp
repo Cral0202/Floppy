@@ -114,10 +114,6 @@ void Game::moveGame() {
     spawnTowerTimeCounter++;
 }
 
-void Game::endGame() {
-    endTheGame = true;
-}
-
 void Game::givePointToPlayer(Collider &collider) {
     if (!collider.getHasCollided()) {
         collider.collides();

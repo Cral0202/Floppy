@@ -47,7 +47,7 @@ class Game {
 
     void spawnTowers(bool force = false);
     void moveGame();
-    void endGame();
+    void endGame() { endTheGame = true; }
     void pollEvents();
 
   public:
