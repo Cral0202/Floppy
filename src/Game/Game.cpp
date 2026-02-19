@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "../Config.h"
+#include "Towers.h"
 
 Game::Game() {
     loadResources();
@@ -36,7 +37,7 @@ void Game::initVariables() {
     scoreCounterText.setOrigin(scoreBounds.left + scoreBounds.width / 2.f, scoreBounds.top + scoreBounds.height / 2.f);
     scoreCounterText.setPosition(ResolutionConfig::baseWidth / 2.f, UIConfig::scoreTopMargin);
 
-    jumpText.setString((UIConfig::jumpText));
+    jumpText.setString(UIConfig::jumpText.data());
     jumpText.setCharacterSize(UIConfig::fontSize);
     jumpText.setFillColor(sf::Color::Black);
     jumpText.setFont(font);
@@ -45,7 +46,7 @@ void Game::initVariables() {
     jumpText.setOrigin(jumpBounds.left + jumpBounds.width / 2.f, jumpBounds.top + jumpBounds.height / 2.f);
     jumpText.setPosition(ResolutionConfig::baseWidth / 2.f, ResolutionConfig::baseHeight / 2.f);
 
-    restartText.setString((UIConfig::restartText));
+    restartText.setString((UIConfig::restartText.data()));
     restartText.setCharacterSize(UIConfig::fontSize);
     restartText.setFillColor(sf::Color::Red);
     restartText.setFont(font);
@@ -78,21 +79,8 @@ void Game::initWindow() {
 }
 
 void Game::initEntities() {
-    spawnTowers(true);
+    TowerSystem::spawnInitialTowers(towers, towerColliders, towerTexture);
     player = std::make_unique<Player>(GameplayConfig::playerSpawnX, (ResolutionConfig::baseHeight / 2.f), playerTexture);
-}
-
-void Game::spawnTowers(bool force) {
-    if (spawnTowerTimeCounter < GameplayConfig::towerSpawnInterval && !force) {
-        return;
-    }
-
-    spawnTowerTimeCounter = 0;
-
-    // Create new towers and add to the collection
-    towers.emplace_back(GameplayConfig::towerSpawnX, 0.f, TowerConfig::width, TowerConfig::height, towerTexture);                                                  // Top tower
-    towers.emplace_back(GameplayConfig::towerSpawnX, (ResolutionConfig::baseHeight - TowerConfig::height), TowerConfig::width, TowerConfig::height, towerTexture); // Bottom tower
-    colliders.emplace_back(GameplayConfig::towerSpawnX, 0.f, TowerConfig::width, ResolutionConfig::baseHeight);                                                    // Collision between towers
 }
 
 void Game::moveGame() {
@@ -102,7 +90,7 @@ void Game::moveGame() {
     }
 
     // Moves all of the colliders to the left
-    for (Collider &collider : colliders) {
+    for (Collider &collider : towerColliders) {
         collider.move(-GameplayConfig::worldScrollSpeed);
     }
 
@@ -116,24 +104,25 @@ void Game::moveGame() {
     }
 
     // Deletes colliders if they are outside of the window
-    for (auto it = colliders.begin(); it != colliders.end();) {
+    for (auto it = towerColliders.begin(); it != towerColliders.end();) {
         if (it->getPosition().x < -GameplayConfig::despawnOffset) {
-            it = colliders.erase(it);
+            it = towerColliders.erase(it);
         } else {
             ++it;
         }
     }
 
     player->move(0.0f, ResolutionConfig::baseHeight);
-    spawnTowerTimeCounter++;
 }
 
 void Game::givePointToPlayer(Collider &collider) {
-    if (!collider.getHasCollided()) {
-        collider.collides();
-        playerScoreCounter++;
-        scoreCounterText.setString(std::to_string(playerScoreCounter));
+    if (collider.getHasCollided()) {
+        return;
     }
+
+    collider.collides();
+    playerScoreCounter++;
+    scoreCounterText.setString(std::to_string(playerScoreCounter));
 }
 
 void Game::pollEvents() {
@@ -198,7 +187,7 @@ void Game::update() {
             endGame();
         }
 
-        for (Collider &collider : colliders) {
+        for (Collider &collider : towerColliders) {
             if (player->collidesWithCollider(collider)) {
                 // Player went between towers
                 givePointToPlayer(collider);
@@ -206,7 +195,7 @@ void Game::update() {
         }
 
         moveGame();
-        spawnTowers();
+        TowerSystem::spawnTowers(towers, towerColliders, towerTexture);
     }
 }
 
@@ -239,8 +228,8 @@ void Game::resetGameState() {
     playerScoreCounter = 0;
 
     towers.clear();
-    colliders.clear();
-    spawnTowers(true);
+    towerColliders.clear();
+    TowerSystem::spawnInitialTowers(towers, towerColliders, towerTexture);
 
     player->setPosition(GameplayConfig::playerSpawnX, (ResolutionConfig::baseHeight / 2)); // Reset player to spawn pos
 }

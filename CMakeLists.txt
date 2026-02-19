@@ -12,7 +12,11 @@ find_package(SFML 2.5 COMPONENTS
     REQUIRED
 )
 
-file(GLOB_RECURSE SOURCES src/*.cpp)
+file(GLOB_RECURSE SOURCES
+    src/*.cpp
+    src/**/*.cpp
+)
+
 add_executable(Floppy ${SOURCES})
 
 target_link_libraries(Floppy

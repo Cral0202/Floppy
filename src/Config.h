@@ -11,8 +11,8 @@ struct UIConfig {
     static constexpr float scoreTopMargin = 40.f;
 
     // Text
-    static inline const std::string jumpText = "Space to jump";
-    static inline const std::string restartText = "Space to restart";
+    static constexpr std::string_view jumpText = "Space to jump";
+    static constexpr std::string_view restartText = "Space to restart";
 };
 
 struct GameplayConfig {
@@ -24,8 +24,8 @@ struct GameplayConfig {
 
     static constexpr float playerSpawnX = 50.f;
 
-    static constexpr int towerSpawnInterval = 400;
-    static constexpr float towerSpawnX = 800.f;
+    static constexpr float towerSpacing = 350.f;
+    static constexpr float towerSpawnOffset = 100.f;
 };
 
 struct PlayerConfig {

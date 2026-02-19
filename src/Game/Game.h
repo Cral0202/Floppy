@@ -18,7 +18,7 @@ class Game {
 
     // Game objects
     std::vector<Tower> towers;
-    std::vector<Collider> colliders;
+    std::vector<Collider> towerColliders;
     std::unique_ptr<Player> player;
 
     // Text
@@ -33,7 +33,6 @@ class Game {
     sf::Texture towerTexture;
     sf::Texture playerTexture;
 
-    int spawnTowerTimeCounter = 0; // Keeps track of when towers should spawn
     int playerScoreCounter = 0;
     bool gameStarted = false;
     bool gameEnded = false;
