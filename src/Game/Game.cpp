@@ -30,7 +30,7 @@ void Game::loadResources() {
 void Game::initVariables() {
     // Text
     scoreCounterText.setCharacterSize(UIConfig::fontSize);
-    scoreCounterText.setFillColor(sf::Color::Black);
+    scoreCounterText.setFillColor(sf::Color::White);
     scoreCounterText.setFont(font);
 
     sf::FloatRect scoreBounds = scoreCounterText.getLocalBounds();
@@ -39,7 +39,7 @@ void Game::initVariables() {
 
     jumpText.setString(UIConfig::jumpText.data());
     jumpText.setCharacterSize(UIConfig::fontSize);
-    jumpText.setFillColor(sf::Color::Black);
+    jumpText.setFillColor(sf::Color::White);
     jumpText.setFont(font);
 
     sf::FloatRect jumpBounds = jumpText.getLocalBounds();

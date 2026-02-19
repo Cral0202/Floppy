@@ -7,7 +7,7 @@ struct ResolutionConfig {
 };
 
 struct UIConfig {
-    static constexpr unsigned fontSize = 48;
+    static constexpr unsigned fontSize = 58;
     static constexpr float scoreTopMargin = 40.f;
 
     // Text
