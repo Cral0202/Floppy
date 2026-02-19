@@ -8,7 +8,6 @@ Player::Player(float x, float y, sf::Texture &texture) {
 
     playerSprite.setTexture(texture);
     playerSprite.setPosition(x, y);
-    playerSprite.setOrigin(PlayerConfig::radius, PlayerConfig::radius);
 
     float desiredWidth = PlayerConfig::radius * 2.f;
     float desiredHeight = PlayerConfig::radius * 2.f;
@@ -18,6 +17,7 @@ Player::Player(float x, float y, sf::Texture &texture) {
     float scaleY = desiredHeight / textureSize.y;
 
     playerSprite.setScale(scaleX, scaleY);
+    playerSprite.setOrigin(textureSize.x / 2.f, textureSize.y / 2.f);
 }
 
 void Player::move(float offset, float height, float dt) {
