@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "../Config.h"
+#include "Collision.h"
 #include "Towers.h"
 
 Game::Game() {
@@ -178,7 +179,7 @@ void Game::update() {
     if (gameStarted && !gameEnded) {
         // Collision detection logic
         for (const Tower &tower : towers) {
-            if (player->checkCollision(tower.getBoundingBox())) {
+            if (Collision::circleVsRect(player->getPosition(), player->getRadius(), tower.getBoundingBox())) {
                 endGame();
             }
         }
@@ -188,7 +189,7 @@ void Game::update() {
         }
 
         for (Collider &collider : towerColliders) {
-            if (player->checkCollision(collider.getBoundingBox())) {
+            if (Collision::circleVsRect(player->getPosition(), player->getRadius(), collider.getBoundingBox())) {
                 // Player went between towers
                 givePointToPlayer(collider);
             }
