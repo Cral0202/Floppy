@@ -7,7 +7,11 @@ Tower::Tower(float x, float y, float w, float h, sf::Texture &texture) {
 
     towerSprite.setTexture(texture);
     towerSprite.setPosition(x, y);
-    towerSprite.setScale(TowerConfig::spriteScaleX, TowerConfig::spriteScaleY);
+
+    sf::Vector2u textureSize = texture.getSize();
+    float scaleX = w / textureSize.x;
+    float scaleY = h / textureSize.y;
+    towerSprite.setScale(scaleX, scaleY);
 }
 
 void Tower::move(float offset) {

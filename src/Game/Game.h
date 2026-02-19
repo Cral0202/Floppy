@@ -9,7 +9,6 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <filesystem>
-#include <iostream>
 
 class Game {
   private:
@@ -45,7 +44,6 @@ class Game {
     void givePointToPlayer(Collider &collider);
     void resetGameState();
 
-    void spawnTowers(bool force = false);
     void moveGame();
     void endGame() { gameEnded = true; }
     void pollEvents();

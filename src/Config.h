@@ -24,8 +24,10 @@ struct GameplayConfig {
 
     static constexpr float playerSpawnX = 50.f;
 
+    static constexpr float firstTowerX = 400.f;
     static constexpr float towerSpacing = 350.f;
     static constexpr float towerSpawnOffset = 100.f;
+    static constexpr float towerGap = 200.f;
 };
 
 struct PlayerConfig {
@@ -40,8 +42,5 @@ struct PlayerConfig {
 
 struct TowerConfig {
     static constexpr float width = 50.f;
-    static constexpr float height = 240.f;
-
-    static constexpr float spriteScaleX = 0.193f;
-    static constexpr float spriteScaleY = 0.185f;
+    static constexpr float minHeight = 100.f;
 };
