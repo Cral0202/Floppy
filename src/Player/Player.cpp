@@ -20,13 +20,14 @@ Player::Player(float x, float y, sf::Texture &texture) {
     playerSprite.setScale(scaleX, scaleY);
 }
 
-void Player::move(float offset, float height) {
+void Player::move(float offset, float height, float dt) {
     // Update the velocity due to gravity
-    velocity.y += GameplayConfig::gravity;
+    velocity.y += GameplayConfig::gravity * dt;
+    float dy = velocity.y * dt;
 
     // Update the player's position based on velocity
-    player.move(sf::Vector2f(0.f, velocity.y));
-    playerSprite.move(sf::Vector2f(0.f, velocity.y));
+    player.move(sf::Vector2f(0.f, dy));
+    playerSprite.move(sf::Vector2f(0.f, dy));
 
     float radius = player.getRadius();
 

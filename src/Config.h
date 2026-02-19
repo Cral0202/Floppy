@@ -16,10 +16,10 @@ struct UIConfig {
 };
 
 struct GameplayConfig {
-    static constexpr float gravity = 0.05f;
-    static constexpr float jumpForce = 3.5f;
+    static constexpr float gravity = 850.f;
+    static constexpr float jumpForce = 450.f;
 
-    static constexpr float worldScrollSpeed = 1.f;
+    static constexpr float worldScrollSpeed = 135.f;
     static constexpr float despawnOffset = 100.f;
 
     static constexpr float playerSpawnX = 50.f;

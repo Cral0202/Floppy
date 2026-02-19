@@ -44,14 +44,14 @@ class Game {
     void givePointToPlayer(Collider &collider);
     void resetGameState();
 
-    void moveGame();
+    void moveGame(float dt);
     void endGame() { gameEnded = true; }
     void pollEvents();
 
   public:
     Game();
 
-    void update();
+    void update(float dt);
     void render();
 
     const bool isRunning() const { return window.isOpen(); }

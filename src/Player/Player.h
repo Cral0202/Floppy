@@ -21,7 +21,7 @@ class Player : public sf::Drawable {
   public:
     Player(float x, float y, sf::Texture &texture);
 
-    void move(float offset, float height);
+    void move(float offset, float height, float dt);
     void jump() { velocity.y = -GameplayConfig::jumpForce; }
     void setPosition(float x, float y);
 

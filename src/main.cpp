@@ -1,12 +1,17 @@
 #include "./Game/Game.h"
+
+#include <SFML/System/Clock.hpp>
 #include <iostream>
 
 int main() {
     try {
         Game game;
+        sf::Clock clock;
 
         while (game.isRunning()) {
-            game.update();
+            float dt = clock.restart().asSeconds();
+
+            game.update(dt);
             game.render();
         }
     } catch (const std::exception &e) {

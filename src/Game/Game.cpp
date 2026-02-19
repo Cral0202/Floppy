@@ -75,45 +75,11 @@ void Game::initWindow() {
     videoMode.height = ResolutionConfig::baseHeight;
     videoMode.width = ResolutionConfig::baseWidth;
     window.create(videoMode, "Floppy", sf::Style::Default);
-
-    window.setFramerateLimit(144); // TODO: Don't rely on this
 }
 
 void Game::initEntities() {
     TowerSystem::spawnInitialTowers(towers, towerColliders, towerTexture);
     player = std::make_unique<Player>(GameplayConfig::playerSpawnX, (ResolutionConfig::baseHeight / 2.f), playerTexture);
-}
-
-void Game::moveGame() {
-    // Moves all of the towers to the left
-    for (Tower &tower : towers) {
-        tower.move(-GameplayConfig::worldScrollSpeed);
-    }
-
-    // Moves all of the colliders to the left
-    for (Collider &collider : towerColliders) {
-        collider.move(-GameplayConfig::worldScrollSpeed);
-    }
-
-    // Deletes towers if they are outside of the window
-    for (auto it = towers.begin(); it != towers.end();) {
-        if (it->getPosition().x < -GameplayConfig::despawnOffset) {
-            it = towers.erase(it);
-        } else {
-            ++it;
-        }
-    }
-
-    // Deletes colliders if they are outside of the window
-    for (auto it = towerColliders.begin(); it != towerColliders.end();) {
-        if (it->getPosition().x < -GameplayConfig::despawnOffset) {
-            it = towerColliders.erase(it);
-        } else {
-            ++it;
-        }
-    }
-
-    player->move(0.0f, ResolutionConfig::baseHeight);
 }
 
 void Game::givePointToPlayer(Collider &collider) {
@@ -173,7 +139,39 @@ void Game::pollEvents() {
     }
 }
 
-void Game::update() {
+void Game::moveGame(float dt) {
+    // Moves all of the towers to the left
+    for (Tower &tower : towers) {
+        tower.move(-GameplayConfig::worldScrollSpeed * dt);
+    }
+
+    // Moves all of the colliders to the left
+    for (Collider &collider : towerColliders) {
+        collider.move(-GameplayConfig::worldScrollSpeed * dt);
+    }
+
+    // Deletes towers if they are outside of the window
+    for (auto it = towers.begin(); it != towers.end();) {
+        if (it->getPosition().x < -GameplayConfig::despawnOffset) {
+            it = towers.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    // Deletes colliders if they are outside of the window
+    for (auto it = towerColliders.begin(); it != towerColliders.end();) {
+        if (it->getPosition().x < -GameplayConfig::despawnOffset) {
+            it = towerColliders.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    player->move(0.0f, ResolutionConfig::baseHeight, dt);
+}
+
+void Game::update(float dt) {
     pollEvents();
 
     if (gameStarted && !gameEnded) {
@@ -195,7 +193,7 @@ void Game::update() {
             }
         }
 
-        moveGame();
+        moveGame(dt);
         TowerSystem::spawnTowers(towers, towerColliders, towerTexture);
     }
 }
