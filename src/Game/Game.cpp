@@ -178,7 +178,7 @@ void Game::update() {
     if (gameStarted && !gameEnded) {
         // Collision detection logic
         for (const Tower &tower : towers) {
-            if (player->collidesWithTower(tower)) {
+            if (player->checkCollision(tower.getBoundingBox())) {
                 endGame();
             }
         }
@@ -188,7 +188,7 @@ void Game::update() {
         }
 
         for (Collider &collider : towerColliders) {
-            if (player->collidesWithCollider(collider)) {
+            if (player->checkCollision(collider.getBoundingBox())) {
                 // Player went between towers
                 givePointToPlayer(collider);
             }

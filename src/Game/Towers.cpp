@@ -5,21 +5,19 @@
 
 namespace TowerSystem {
     void spawnTowerPair(std::vector<Tower> &towers, std::vector<Collider> &colliders, sf::Texture &towerTexture, float x) {
-        const float gapHeight = GameplayConfig::towerGap;
-        const float minTowerHeight = TowerConfig::minHeight;
-        const float maxTowerHeight = ResolutionConfig::baseHeight - gapHeight - minTowerHeight;
+        const float maxTowerHeight = ResolutionConfig::baseHeight - GameplayConfig::towerGap - TowerConfig::minHeight;
 
         // Random top tower height
         static std::random_device rd;
         static std::mt19937 gen(rd());
-        std::uniform_real_distribution<float> dist(minTowerHeight, maxTowerHeight);
+        std::uniform_real_distribution<float> dist(TowerConfig::minHeight, maxTowerHeight);
 
         float topTowerHeight = dist(gen);
-        float bottomTowerHeight = ResolutionConfig::baseHeight - topTowerHeight - gapHeight;
+        float bottomTowerHeight = ResolutionConfig::baseHeight - topTowerHeight - GameplayConfig::towerGap;
 
         towers.emplace_back(x, 0.f, TowerConfig::width, topTowerHeight, towerTexture);                                                 // Top tower
         towers.emplace_back(x, ResolutionConfig::baseHeight - bottomTowerHeight, TowerConfig::width, bottomTowerHeight, towerTexture); // Bottom tower
-        colliders.emplace_back(x, 0.f, TowerConfig::width, ResolutionConfig::baseHeight);                                              // Collider covering the gap
+        colliders.emplace_back(x, topTowerHeight, TowerConfig::width, GameplayConfig::towerGap);                                       // Collider covering the gap
     }
 
     void spawnInitialTowers(std::vector<Tower> &towers, std::vector<Collider> &colliders, sf::Texture &towerTexture) {

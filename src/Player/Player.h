@@ -24,8 +24,7 @@ class Player : public sf::Drawable {
     void move(float offset, float height);
     void jump() { velocity.y = -GameplayConfig::jumpForce; }
     void setPosition(float x, float y);
-    bool collidesWithTower(const Tower &tower) const;
-    bool collidesWithCollider(const Collider &collider) const;
+    bool checkCollision(sf::FloatRect rect) const;
 
     bool getTouchingGround() const { return touchingGround; }
     sf::Vector2f getPosition() const { return player.getPosition(); }

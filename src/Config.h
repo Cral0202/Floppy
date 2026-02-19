@@ -27,20 +27,14 @@ struct GameplayConfig {
     static constexpr float firstTowerX = 400.f;
     static constexpr float towerSpacing = 350.f;
     static constexpr float towerSpawnOffset = 100.f;
-    static constexpr float towerGap = 200.f;
+    static constexpr float towerGap = 150.f;
 };
 
 struct PlayerConfig {
-    static constexpr float width = 64.f;
-    static constexpr float height = 48.f;
-
-    static constexpr float spriteScaleX = 0.65f;
-    static constexpr float spriteScaleY = 0.622f;
-
-    static constexpr float radius = 20.f;
+    static constexpr float radius = 27.f;
 };
 
 struct TowerConfig {
-    static constexpr float width = 50.f;
+    static constexpr float width = 55.f;
     static constexpr float minHeight = 100.f;
 };

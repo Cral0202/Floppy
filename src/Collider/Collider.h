@@ -3,8 +3,10 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
-class Collider {
+class Collider : public sf::Drawable {
   private:
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override { target.draw(collider, states); }
+
     sf::RectangleShape collider;
     bool hasCollided = false;
 
