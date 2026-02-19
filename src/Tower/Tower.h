@@ -1,19 +1,12 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include "../Config.h"
 
-namespace TowerConfig {
-    const float DefaultWidth = 50.f;
-    const float DefaultHeight = 240.f;
-    const float ScaleX = 0.193f;
-    const float ScaleY = 0.185f;
-}
+#include <SFML/Graphics.hpp>
 
 class Tower : public sf::Drawable {
   private:
-    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
-        target.draw(towerSprite, states);
-    }
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override { target.draw(towerSprite, states); }
 
     sf::RectangleShape tower;
     sf::Sprite towerSprite;
@@ -22,7 +15,7 @@ class Tower : public sf::Drawable {
     float height;
 
   public:
-    Tower(float x, float y, sf::Texture &texture, float h = TowerConfig::DefaultHeight);
+    Tower(float x, float y, float w, float h, sf::Texture &texture);
 
     void move(float offset);
 

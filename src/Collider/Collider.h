@@ -9,7 +9,7 @@ class Collider {
     bool hasCollided = false;
 
   public:
-    Collider(float width, float height, float x, float y);
+    Collider(float x, float y, float w, float h);
 
     void move(float offset) { collider.move(sf::Vector2f(offset, 0.f)); }
     void collides() { hasCollided = true; }

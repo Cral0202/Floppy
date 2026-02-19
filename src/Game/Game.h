@@ -3,6 +3,7 @@
 #include "../Collider/Collider.h"
 #include "../Player/Player.h"
 #include "../Tower/Tower.h"
+
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -14,7 +15,6 @@ class Game {
   private:
     sf::RenderWindow window;
     sf::Event event;
-    sf::VideoMode videoMode;
 
     // Game objects
     std::vector<Tower> towers;
@@ -23,6 +23,7 @@ class Game {
 
     // Text
     sf::Text scoreCounterText;
+    sf::Text jumpText;
     sf::Text restartText;
     sf::Font font;
 
@@ -34,8 +35,8 @@ class Game {
 
     int spawnTowerTimeCounter = 0; // Keeps track of when towers should spawn
     int playerScoreCounter = 0;
-    bool startGame = false;
-    bool endTheGame = false;
+    bool gameStarted = false;
+    bool gameEnded = false;
 
     void loadResources();
     void initVariables();
@@ -47,7 +48,7 @@ class Game {
 
     void spawnTowers(bool force = false);
     void moveGame();
-    void endGame() { endTheGame = true; }
+    void endGame() { gameEnded = true; }
     void pollEvents();
 
   public:

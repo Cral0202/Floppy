@@ -1,10 +1,11 @@
 #include "Game.h"
+#include "../Config.h"
 
 Game::Game() {
     loadResources();
     initVariables();
-    initWindow();
     initEntities();
+    initWindow();
 }
 
 void Game::loadResources() {
@@ -27,64 +28,87 @@ void Game::loadResources() {
 
 void Game::initVariables() {
     // Text
-    scoreCounterText.setString(("Space to jump"));
-    scoreCounterText.setCharacterSize(40);
+    scoreCounterText.setCharacterSize(UIConfig::fontSize);
     scoreCounterText.setFillColor(sf::Color::Black);
-    scoreCounterText.setPosition(290, 20);
     scoreCounterText.setFont(font);
 
-    restartText.setString(("Space to restart"));
-    restartText.setCharacterSize(40);
+    sf::FloatRect scoreBounds = scoreCounterText.getLocalBounds();
+    scoreCounterText.setOrigin(scoreBounds.left + scoreBounds.width / 2.f, scoreBounds.top + scoreBounds.height / 2.f);
+    scoreCounterText.setPosition(ResolutionConfig::baseWidth / 2.f, UIConfig::scoreTopMargin);
+
+    jumpText.setString((UIConfig::jumpText));
+    jumpText.setCharacterSize(UIConfig::fontSize);
+    jumpText.setFillColor(sf::Color::Black);
+    jumpText.setFont(font);
+
+    sf::FloatRect jumpBounds = jumpText.getLocalBounds();
+    jumpText.setOrigin(jumpBounds.left + jumpBounds.width / 2.f, jumpBounds.top + jumpBounds.height / 2.f);
+    jumpText.setPosition(ResolutionConfig::baseWidth / 2.f, ResolutionConfig::baseHeight / 2.f);
+
+    restartText.setString((UIConfig::restartText));
+    restartText.setCharacterSize(UIConfig::fontSize);
     restartText.setFillColor(sf::Color::Red);
-    restartText.setPosition(270, 300);
     restartText.setFont(font);
 
-    // Background textures
+    sf::FloatRect restartBounds = restartText.getLocalBounds();
+    restartText.setOrigin(restartBounds.left + restartBounds.width / 2.f, restartBounds.top + restartBounds.height / 2.f);
+    restartText.setPosition(ResolutionConfig::baseWidth / 2.f, ResolutionConfig::baseHeight / 2.f);
+
+    // Background texture
     backgroundSprite.setTexture(backgroundTexture);
     backgroundSprite.setPosition(0.f, 0.f);
-    backgroundSprite.setScale(0.417f, 0.56f);
+
+    sf::Vector2u textureSize = backgroundTexture.getSize();
+    float windowWidth = ResolutionConfig::baseWidth;
+    float windowHeight = ResolutionConfig::baseHeight;
+
+    float scaleX = windowWidth / textureSize.x;
+    float scaleY = windowHeight / textureSize.y;
+
+    backgroundSprite.setScale(scaleX, scaleY);
 }
 
 void Game::initWindow() {
-    videoMode.height = 600;
-    videoMode.width = 800;
-    window.create(this->videoMode, "Floppy", sf::Style::Default);
+    sf::VideoMode videoMode;
+    videoMode.height = ResolutionConfig::baseHeight;
+    videoMode.width = ResolutionConfig::baseWidth;
+    window.create(videoMode, "Floppy", sf::Style::Default);
 
-    window.setFramerateLimit(144);
+    window.setFramerateLimit(144); // TODO: Don't rely on this
 }
 
 void Game::initEntities() {
     spawnTowers(true);
-    player = std::make_unique<Player>(50.f, (videoMode.height / 2.f), playerTexture);
+    player = std::make_unique<Player>(GameplayConfig::playerSpawnX, (ResolutionConfig::baseHeight / 2.f), playerTexture);
 }
 
 void Game::spawnTowers(bool force) {
-    if (spawnTowerTimeCounter < 400 && !force) {
+    if (spawnTowerTimeCounter < GameplayConfig::towerSpawnInterval && !force) {
         return;
     }
 
     spawnTowerTimeCounter = 0;
 
     // Create new towers and add to the collection
-    towers.emplace_back(800.f, 0.f, towerTexture);                                  // Top tower
-    towers.emplace_back(800.f, (600.f - TowerConfig::DefaultHeight), towerTexture); // Bottom tower
-    colliders.emplace_back(TowerConfig::DefaultWidth, 600.f, 800.f, 0.f);           // Collision between towers
+    towers.emplace_back(GameplayConfig::towerSpawnX, 0.f, TowerConfig::width, TowerConfig::height, towerTexture);                                                  // Top tower
+    towers.emplace_back(GameplayConfig::towerSpawnX, (ResolutionConfig::baseHeight - TowerConfig::height), TowerConfig::width, TowerConfig::height, towerTexture); // Bottom tower
+    colliders.emplace_back(GameplayConfig::towerSpawnX, 0.f, TowerConfig::width, ResolutionConfig::baseHeight);                                                    // Collision between towers
 }
 
 void Game::moveGame() {
     // Moves all of the towers to the left
     for (Tower &tower : towers) {
-        tower.move(-1.f);
+        tower.move(-GameplayConfig::worldScrollSpeed);
     }
 
     // Moves all of the colliders to the left
     for (Collider &collider : colliders) {
-        collider.move(-1.f);
+        collider.move(-GameplayConfig::worldScrollSpeed);
     }
 
     // Deletes towers if they are outside of the window
     for (auto it = towers.begin(); it != towers.end();) {
-        if (it->getPosition().x < -100) {
+        if (it->getPosition().x < -GameplayConfig::despawnOffset) {
             it = towers.erase(it);
         } else {
             ++it;
@@ -93,14 +117,14 @@ void Game::moveGame() {
 
     // Deletes colliders if they are outside of the window
     for (auto it = colliders.begin(); it != colliders.end();) {
-        if (it->getPosition().x < -100) {
+        if (it->getPosition().x < -GameplayConfig::despawnOffset) {
             it = colliders.erase(it);
         } else {
             ++it;
         }
     }
 
-    player->move(0.0f, videoMode.height);
+    player->move(0.0f, ResolutionConfig::baseHeight);
     spawnTowerTimeCounter++;
 }
 
@@ -135,14 +159,13 @@ void Game::pollEvents() {
             case sf::Keyboard::Space:
 
                 // Starts the game if it hasn't started yet
-                if (!startGame && !endTheGame) {
-                    startGame = true;
+                if (!gameStarted && !gameEnded) {
+                    gameStarted = true;
                     scoreCounterText.setString(std::to_string(playerScoreCounter));
-                    scoreCounterText.setPosition(400, 20);
                 }
                 // Resets the game if it has ended
-                else if (endTheGame) {
-                    endTheGame = false;
+                else if (gameEnded) {
+                    gameEnded = false;
                     resetGameState();
                 }
 
@@ -163,7 +186,7 @@ void Game::pollEvents() {
 void Game::update() {
     pollEvents();
 
-    if (startGame && !endTheGame) {
+    if (gameStarted && !gameEnded) {
         // Collision detection logic
         for (const Tower &tower : towers) {
             if (player->collidesWithTower(tower)) {
@@ -196,9 +219,14 @@ void Game::render() {
     }
 
     window.draw(*player);
-    window.draw(scoreCounterText);
 
-    if (endTheGame) {
+    if (gameStarted) {
+        window.draw(scoreCounterText);
+    } else {
+        window.draw(jumpText);
+    }
+
+    if (gameEnded) {
         window.draw(restartText);
     }
 
@@ -206,17 +234,13 @@ void Game::render() {
 }
 
 void Game::resetGameState() {
-    endTheGame = false;
-    startGame = false;
+    gameEnded = false;
+    gameStarted = false;
     playerScoreCounter = 0;
 
     towers.clear();
     colliders.clear();
     spawnTowers(true);
 
-    player->setPosition(50.f, (videoMode.height / 2)); // Resets the player to spawn position
-    player->setSpriteRotation(0);
-
-    scoreCounterText.setPosition(290, 20);
-    scoreCounterText.setString(("Space to jump"));
+    player->setPosition(GameplayConfig::playerSpawnX, (ResolutionConfig::baseHeight / 2)); // Reset player to spawn pos
 }

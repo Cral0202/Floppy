@@ -1,13 +1,13 @@
 #include "Tower.h"
 
-Tower::Tower(float x, float y, sf::Texture &texture, float h) : width(TowerConfig::DefaultWidth), height(h) {
-    tower.setSize(sf::Vector2f(width, height));
+Tower::Tower(float x, float y, float w, float h, sf::Texture &texture) {
+    tower.setSize(sf::Vector2f(w, h));
     tower.setFillColor(sf::Color::Cyan);
     tower.setPosition(x, y);
 
     towerSprite.setTexture(texture);
     towerSprite.setPosition(x, y);
-    towerSprite.setScale(TowerConfig::ScaleX, TowerConfig::ScaleY);
+    towerSprite.setScale(TowerConfig::spriteScaleX, TowerConfig::spriteScaleY);
 }
 
 void Tower::move(float offset) {

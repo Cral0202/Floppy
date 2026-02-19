@@ -2,6 +2,6 @@ BasedOnStyle: LLVM
 BreakBeforeBraces: Attach
 AllowShortFunctionsOnASingleLine: Inline
 IndentWidth: 4
-ColumnLimit: 120
+ColumnLimit: 200
 FixNamespaceComments: false
 NamespaceIndentation: All
