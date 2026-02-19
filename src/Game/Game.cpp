@@ -75,6 +75,7 @@ void Game::initWindow() {
     videoMode.height = ResolutionConfig::baseHeight;
     videoMode.width = ResolutionConfig::baseWidth;
     window.create(videoMode, "Floppy", sf::Style::Default);
+    window.setVerticalSyncEnabled(true);
 }
 
 void Game::initEntities() {
