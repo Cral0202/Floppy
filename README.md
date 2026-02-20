@@ -4,7 +4,7 @@ A simple Flappy Bird-like game written in C++ using SFML.
 
 ## Usage
 
-The executable must be run from the project root because assets paths are resolved relative to the project root.
+The executable must be run from the project root because asset paths are resolved relative to the project root.
 
 ## Build Requirements
 
