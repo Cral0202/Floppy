@@ -2,13 +2,17 @@
 
 A simple Flappy Bird-like game written in C++ using SFML.
 
-## Requirements
+## Usage
+
+The executable must be run from the project root because assets paths are resolved relative to the project root.
+
+## Build Requirements
 
 Before building, make sure you have:
 
 - C++17 compatible compiler
 - CMake 3.20+
-- SFML 2.5 or newer (2.x series)
+- SFML 2.5+ (2.x series)
 
 ## Build Instructions
 
