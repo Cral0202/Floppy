@@ -31,7 +31,7 @@ struct GameplayConfig {
 };
 
 struct PlayerConfig {
-    static constexpr float radius = 27.f;
+    static constexpr float radius = 30.f;
 };
 
 struct TowerConfig {

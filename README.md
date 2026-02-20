@@ -31,3 +31,9 @@ Build:
 `cmake --build .`
 
 The executable will be placed in the project root.
+
+---
+
+### Program image:
+
+![Demo image](assets/demo_images/demo_image.png)
